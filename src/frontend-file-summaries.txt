@@ -1,0 +1,22 @@
+{
+  "frontend/src/index.css": "Global styles with warm earthy color palette (terracotta, sage green, cream) using OKLCH color system, Playfair Display serif for headings and Inter sans-serif for body text, with custom design tokens for both light and dark modes.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with custom fonts (Playfair Display, Inter), warm earthy color palette, custom shadows (soft, elegant), and animation utilities for the boutique aesthetic.",
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining routes for public catalog (root), admin panel, create product, and edit product pages with AdminGuard protection for admin routes.",
+  "frontend/src/components/Header.tsx": "Site header with branding, conditional admin panel link (visible only to admins), and login button with sticky positioning and backdrop blur effect.",
+  "frontend/src/components/Footer.tsx": "Footer component with copyright notice and attribution link to caffeine.ai with UTM tracking parameters based on hostname.",
+  "frontend/src/components/LoginButton.tsx": "Internet Identity login/logout button with loading states, icons, and proper query cache clearing on logout.",
+  "frontend/src/components/WhatsAppButton.tsx": "WhatsApp contact button that opens WhatsApp with pre-filled message including product name, styled with WhatsApp green color.",
+  "frontend/src/components/ProductCard.tsx": "Product card component displaying product image, name, description, price in rupees, and WhatsApp contact button with hover effects and elegant shadows.",
+  "frontend/src/components/ProductGrid.tsx": "Responsive grid layout component for displaying multiple product cards with empty state handling.",
+  "frontend/src/components/AdminGuard.tsx": "Authorization wrapper component that checks authentication and admin status, showing appropriate loading, login required, or access denied messages.",
+  "frontend/src/pages/PublicCatalog.tsx": "Public-facing product catalog page with hero banner image, product grid, and loading/error states, accessible without authentication.",
+  "frontend/src/pages/AdminPanel.tsx": "Admin dashboard displaying all products in a table with edit and delete actions, plus add product button, protected by admin authentication.",
+  "frontend/src/pages/CreateProduct.tsx": "Product creation form with fields for name, description, price, WhatsApp number, and image upload with progress tracking.",
+  "frontend/src/pages/EditProduct.tsx": "Product editing form that loads existing product data and allows updating all fields including image replacement with upload progress.",
+  "frontend/src/hooks/useProducts.ts": "React Query hook for fetching all products from the backend, enabled when actor is available.",
+  "frontend/src/hooks/useProduct.ts": "React Query hook for fetching a single product by ID from the backend.",
+  "frontend/src/hooks/useCreateProduct.ts": "React Query mutation hook for creating new products with automatic cache invalidation on success.",
+  "frontend/src/hooks/useUpdateProduct.ts": "React Query mutation hook for updating existing products with automatic cache invalidation on success.",
+  "frontend/src/hooks/useDeleteProduct.ts": "React Query mutation hook for deleting products with automatic cache invalidation on success.",
+  "frontend/src/hooks/useIsAdmin.ts": "React Query hook that checks if the current authenticated user has admin privileges using the backend's isCallerAdmin method."
+}

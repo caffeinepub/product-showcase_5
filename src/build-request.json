@@ -1,0 +1,139 @@
+{
+  "kind": "build_request",
+  "title": "Create commercial product catalog with WhatsApp contact and admin panel",
+  "projectName": "Product Showcase",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a product catalog interface displaying products with images, names, descriptions, and prices in a visually appealing grid layout",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "make a web site for commercial web site which is stable , facinated"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Products are displayed in a responsive grid layout",
+        "Each product card shows image, name, description, and price",
+        "Layout is visually appealing and professional"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add a prominent WhatsApp contact button on each product that opens WhatsApp with a pre-filled message containing the product name",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "when any one want to buy product they can easyly get my wattsapp number"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each product has a visible WhatsApp button",
+        "Clicking the button opens WhatsApp with product details pre-filled",
+        "Works on both mobile and desktop browsers"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement public product browsing without any sign-up, login, or authentication requirements for visitors",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "their no need to do sign up or login they can easyly acces thier"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Visitors can view all products immediately without creating an account",
+        "No login prompts or barriers appear for browsing",
+        "Product catalog loads instantly on page visit"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Create an admin panel accessible through Internet Identity that allows adding, editing, and deleting products including their names, descriptions, prices, and images",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "provide me domain also for i can easyly access to change the product or rs"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin can log in using Internet Identity",
+        "Admin can create new products with all details",
+        "Admin can edit existing product information and prices",
+        "Admin can delete products from the catalog",
+        "Changes are immediately reflected on the public catalog"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement backend data model and CRUD operations for products including fields for name, description, price, image URL, and WhatsApp number",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "change the product or rs"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Products are stored persistently in stable memory",
+        "CRUD operations support all product fields",
+        "Data persists across canister upgrades",
+        "Products can be retrieved for public display"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Design a visually captivating and professional aesthetic using warm, earthy tones (terracotta, sage green, cream) with elegant serif typography for headings and clean sans-serif for body text, creating a modern boutique feel with generous whitespace and subtle shadows",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "facinated"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Color palette uses warm, earthy tones consistently throughout",
+        "Typography combines serif headings with sans-serif body text",
+        "Layout feels spacious with generous whitespace",
+        "Overall design conveys professionalism and sophistication"
+      ]
+    }
+  ],
+  "constraints": [
+    "Public product browsing must work without any authentication",
+    "Admin features must be protected by Internet Identity authentication",
+    "All product data must persist across canister upgrades"
+  ],
+  "nonGoals": [
+    "Payment processing or checkout functionality",
+    "User accounts or customer login system",
+    "Shopping cart features",
+    "Order tracking or management",
+    "Email notifications"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Hero banner image showing elegant product display setup with warm lighting (hero-banner.dim_1920x600.png)",
+      "Placeholder product image for items without photos, minimalist design (product-placeholder.dim_400x400.png)"
+    ],
+    "edits": []
+  }
+}

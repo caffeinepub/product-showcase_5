@@ -1,0 +1,160 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Frontend Implementation Plan for Product Showcase",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Create a product catalog interface displaying products with images, names, descriptions, and prices in a visually appealing grid layout",
+      "acceptanceCriteria": [
+        "Products are displayed in a responsive grid layout",
+        "Each product card shows image, name, description, and price",
+        "Layout is visually appealing and professional"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "create",
+          "description": "Create a reusable ProductCard component that displays a single product with image, name, description, and price. Use the ExternalBlob.getDirectURL() method to display product images efficiently with streaming and caching. Apply warm earthy color palette and elegant typography. Include the WhatsApp contact button from REQ-2."
+        },
+        {
+          "path": "frontend/src/components/ProductGrid.tsx",
+          "operation": "create",
+          "description": "Create a ProductGrid component that renders multiple ProductCard components in a responsive grid layout using Tailwind grid classes. Ensure generous whitespace and professional spacing between cards."
+        },
+        {
+          "path": "frontend/src/hooks/useProducts.ts",
+          "operation": "create",
+          "description": "Create a custom hook that fetches products from the backend using getProducts() method. Use react-query for caching and state management. Handle loading and error states. No authentication required for fetching products."
+        },
+        {
+          "path": "frontend/src/pages/PublicCatalog.tsx",
+          "operation": "create",
+          "description": "Create the main public product catalog page that uses ProductGrid to display all products. Include the hero banner image from frontend/public/assets/generated/hero-banner.dim_1920x600.png at the top of the page. Handle loading states and empty states gracefully. This page is accessible without authentication."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Add a prominent WhatsApp contact button on each product that opens WhatsApp with a pre-filled message containing the product name",
+      "acceptanceCriteria": [
+        "Each product has a visible WhatsApp button",
+        "Clicking the button opens WhatsApp with product details pre-filled",
+        "Works on both mobile and desktop browsers"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/WhatsAppButton.tsx",
+          "operation": "create",
+          "description": "Create a WhatsAppButton component that accepts product name and WhatsApp number as props. Generate a WhatsApp URL with pre-filled message including product name (e.g., wa.me/{number}?text=Hi, I'm interested in {productName}). Use an anchor tag with target='_blank' to open WhatsApp. Style with prominent green color and WhatsApp icon. Works on both mobile (opens app) and desktop (opens web.whatsapp.com)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement public product browsing without any sign-up, login, or authentication requirements for visitors",
+      "acceptanceCriteria": [
+        "Visitors can view all products immediately without creating an account",
+        "No login prompts or barriers appear for browsing",
+        "Product catalog loads instantly on page visit"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Update the main App component to set PublicCatalog as the default landing page at the root route (/). Ensure no authentication guards block access to the public catalog. Keep admin routes protected but public catalog accessible to all visitors including anonymous principals."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Create an admin panel accessible through Internet Identity that allows adding, editing, and deleting products including their names, descriptions, prices, and images",
+      "acceptanceCriteria": [
+        "Admin can log in using Internet Identity",
+        "Admin can create new products with all details",
+        "Admin can edit existing product information and prices",
+        "Admin can delete products from the catalog",
+        "Changes are immediately reflected on the public catalog"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AdminPanel.tsx",
+          "operation": "create",
+          "description": "Create an admin panel page that displays all products in a table/list format with edit and delete actions. Use the authorization component to verify admin access with isCallerAdmin() before rendering. Show access denied message if user is not admin. Include a button to navigate to the product creation form."
+        },
+        {
+          "path": "frontend/src/pages/CreateProduct.tsx",
+          "operation": "create",
+          "description": "Create a product creation form page with fields for name, description, price, WhatsApp number, and image upload. Use ExternalBlob.fromBytes() for image uploads with withUploadProgress() to show upload progress. Call createProduct() backend method on submission. Use the blob-storage component for handling image uploads. Verify the blob-storage component's usage instructions before implementing. Guard with admin-only access check. Navigate back to admin panel on success."
+        },
+        {
+          "path": "frontend/src/pages/EditProduct.tsx",
+          "operation": "create",
+          "description": "Create a product editing form page that loads existing product data using getProduct(id) and allows editing all fields. Use ExternalBlob for image replacement with upload progress tracking. Call updateProduct() backend method on submission. Verify the blob-storage component's usage instructions before implementing. Guard with admin-only access check. Navigate back to admin panel on success."
+        },
+        {
+          "path": "frontend/src/hooks/useCreateProduct.ts",
+          "operation": "create",
+          "description": "Create a custom hook that wraps the createProduct() backend method using react-query mutation. Handle success, error, and loading states. Invalidate products query cache on success to trigger refetch."
+        },
+        {
+          "path": "frontend/src/hooks/useUpdateProduct.ts",
+          "operation": "create",
+          "description": "Create a custom hook that wraps the updateProduct() backend method using react-query mutation. Handle success, error, and loading states. Invalidate products query cache on success."
+        },
+        {
+          "path": "frontend/src/hooks/useDeleteProduct.ts",
+          "operation": "create",
+          "description": "Create a custom hook that wraps the deleteProduct() backend method using react-query mutation. Handle success, error, and loading states. Invalidate products query cache on success."
+        },
+        {
+          "path": "frontend/src/components/AdminGuard.tsx",
+          "operation": "create",
+          "description": "Create an AdminGuard wrapper component that checks if the user is authenticated and has admin role using isCallerAdmin(). Show loading state while checking. Display access denied message if not admin. Render children if admin. Use the authorization component to enforce admin-only access."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add routes for /admin, /admin/create, and /admin/edit/:id. Wrap admin routes with AdminGuard component to enforce authentication and admin role verification. Add navigation link to admin panel in the header that is only visible to authenticated admins."
+        },
+        {
+          "path": "frontend/src/components/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a LoginButton component following the authorization component's login component pattern. Handle login/logout with Internet Identity. Clear query cache on logout. Display login status and disable during authentication flow."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "create",
+          "description": "Create a Header component that includes the site branding, LoginButton, and conditional admin panel link (only shown to admins). Use isCallerAdmin() to conditionally render admin navigation. Apply warm earthy color scheme and elegant typography."
+        },
+        {
+          "path": "frontend/src/hooks/useIsAdmin.ts",
+          "operation": "create",
+          "description": "Create a custom hook that checks if the current user is an admin using isCallerAdmin() backend method. Use react-query with proper dependency on authentication state. Return loading and admin status."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Design a visually captivating and professional aesthetic using warm, earthy tones (terracotta, sage green, cream) with elegant serif typography for headings and clean sans-serif for body text, creating a modern boutique feel with generous whitespace and subtle shadows",
+      "acceptanceCriteria": [
+        "Color palette uses warm, earthy tones consistently throughout",
+        "Typography combines serif headings with sans-serif body text",
+        "Layout feels spacious with generous whitespace",
+        "Overall design conveys professionalism and sophistication"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend Tailwind configuration to include custom color palette with warm earthy tones: terracotta (#E07A5F or similar), sage green (#81B29A or similar), cream (#F4F1DE or similar), and complementary neutrals. Add custom font families for serif headings (e.g., Playfair Display, Lora) and sans-serif body text (e.g., Inter, Open Sans). Configure font weights and line heights for elegant typography."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Import Google Fonts for the serif and sans-serif typefaces. Apply global typography styles with serif fonts for h1-h6 headings and sans-serif for body text. Set up base colors from the warm earthy palette. Add utility classes for subtle shadows and generous spacing. Ensure professional and sophisticated aesthetic throughout."
+        }
+      ]
+    }
+  ]
+}
