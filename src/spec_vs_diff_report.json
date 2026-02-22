@@ -1,64 +1,141 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-21T16:17:50.824Z",
-  "summary": "The implementation successfully covers all core requirements. Product catalog with grid layout, WhatsApp integration, public browsing, Internet Identity admin authentication, CRUD operations, and warm earthy design aesthetics are all present. All required images are referenced in the BuildRequest but no evidence of their actual implementation appears in the diff (placeholder logic exists but actual image files are not shown).",
+  "generatedAt": "2026-02-22T04:43:42.643Z",
+  "summary": "The diff implements most major requirements including shopping cart, COD checkout, customer authentication, order tracking, admin order management, inventory management, product search, categories, Nepali language, animations, and mobile responsiveness. However, some specific acceptance criteria details may be missing or incomplete due to diff truncation.",
   "missing_requirements": [
     {
-      "id": "REQ-6",
-      "requirement": "Two specific images required: hero-banner.dim_1920x600.png and product-placeholder.dim_400x400.png",
-      "reason": "BuildRequest specifies two images with exact dimensions and descriptions (hero banner with elegant product display and warm lighting, minimalist product placeholder). The diff shows placeholder logic in ProductCard.tsx but no evidence of actual image files or hero banner implementation.",
-      "evidence": [
-        "frontend/src/components/ProductCard.tsx"
-      ]
-    }
-  ],
-  "hallucinated_features": [
-    {
-      "description": "User profile management system with getCallerUserProfile, getUserProfile, and saveCallerUserProfile functions",
-      "reason": "BuildRequest explicitly states in non-goals: 'User accounts or customer login system'. The backend implements a complete user profile system with UserProfile type and storage, which contradicts this constraint.",
+      "id": "REQ-7",
+      "requirement": "Cart persists for authenticated users across sessions",
+      "reason": "No evidence in backend (main.mo) showing cart persistence mechanism across sessions. Cart data appears to be stored in memory (Map) without session persistence logic visible in truncated backend code.",
       "evidence": [
         "backend/main.mo"
       ]
     },
     {
-      "description": "Dark mode color scheme support",
-      "reason": "BuildRequest specifies warm, earthy tones (terracotta, sage green, cream) with no mention of dark mode. The CSS implements a complete dark theme with different color values.",
+      "id": "REQ-8",
+      "requirement": "Confirmation message displays estimated delivery timeframe",
+      "reason": "OrderConfirmation page is listed but content is not shown in diff. Cannot verify if estimated delivery timeframe is displayed.",
+      "evidence": [
+        "frontend/src/pages/OrderConfirmation.tsx"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "Status updates are visible in real-time when admin changes them",
+      "reason": "No evidence of real-time update mechanism (websockets, polling, subscriptions). Query invalidation exists but doesn't guarantee real-time visibility without manual refresh.",
+      "evidence": [
+        "frontend/src/hooks/useAllOrders.ts",
+        "frontend/src/hooks/useOrder.ts"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "Admin can add/edit shipping notes or tracking information",
+      "reason": "Order type includes shippingDetails but no 'shippingNotes' or 'trackingInfo' fields visible. AdminOrderDetails page truncated, cannot verify this functionality.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/pages/AdminOrderDetails.tsx"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "Stock quantity decreases automatically when orders are placed",
+      "reason": "Backend checkout function is truncated. Cannot verify automatic stock decrement logic when orders are placed.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "requirement": "Loading states use smooth skeleton animations",
+      "reason": "LoadingSkeleton component exists with ProductCardSkeleton and ProductGridSkeleton, but evidence is limited. Cannot verify all loading states throughout the app use skeleton animations.",
+      "evidence": [
+        "frontend/src/components/LoadingSkeleton.tsx"
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "requirement": "No horizontal scrolling on any screen size",
+      "reason": "CSS includes responsive utilities but no explicit overflow-x-hidden or horizontal scroll prevention visible. Cannot verify this constraint is enforced across all pages.",
       "evidence": [
         "frontend/src/index.css"
       ]
     }
   ],
-  "confidence": 0.85,
+  "hallucinated_features": [
+    {
+      "description": "Migration module for upgrading old product schema to new schema with category and stock",
+      "reason": "Migration logic (backend/migration.mo) was not requested in BuildRequest. This appears to be infrastructure added beyond requirements.",
+      "evidence": [
+        "backend/migration.mo"
+      ]
+    },
+    {
+      "description": "User profile management with complete address storage",
+      "reason": "UserProfile type with dedicated profile management functions (getCallerUserProfile, saveCallerUserProfile) extends beyond checkout requirements. REQ-8 only requires collecting shipping details at checkout, not persistent profile storage.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useGetCallerUserProfile.ts",
+        "frontend/src/hooks/useSaveCallerUserProfile.ts",
+        "frontend/src/components/ProfileSetupModal.tsx"
+      ]
+    },
+    {
+      "description": "Product comparison functions (compareByName, compareByPrice) in backend",
+      "reason": "No requirement specifies product sorting or comparison functionality. These utility functions were not requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.7,
   "changed_files": [
-    "all_files_summary.json",
     "backend/main.mo",
+    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/index.css",
-    "frontend/index.html",
     "frontend/src/App.tsx",
-    "frontend/src/components/AdminGuard.tsx",
-    "frontend/src/components/Footer.tsx",
+    "frontend/src/components/AddToCartButton.tsx",
+    "frontend/src/components/CartDrawer.tsx",
+    "frontend/src/components/CategoryBadge.tsx",
+    "frontend/src/components/CategoryFilter.tsx",
     "frontend/src/components/Header.tsx",
-    "frontend/src/components/LoginButton.tsx",
+    "frontend/src/components/LanguageToggle.tsx",
+    "frontend/src/components/LoadingSkeleton.tsx",
+    "frontend/src/components/MobileNav.tsx",
+    "frontend/src/components/OrderStatusBadge.tsx",
+    "frontend/src/components/PageTransition.tsx",
     "frontend/src/components/ProductCard.tsx",
-    "frontend/src/components/ProductGrid.tsx",
-    "frontend/src/components/WhatsAppButton.tsx",
-    "frontend/src/hooks/useActor.ts",
+    "frontend/src/components/ProductSearch.tsx",
+    "frontend/src/components/ProfileSetupModal.tsx",
+    "frontend/src/contexts/LanguageContext.tsx",
+    "frontend/src/hooks/useAddToCart.ts",
+    "frontend/src/hooks/useAllOrders.ts",
+    "frontend/src/hooks/useCart.ts",
+    "frontend/src/hooks/useCheckout.ts",
     "frontend/src/hooks/useCreateProduct.ts",
-    "frontend/src/hooks/useDeleteProduct.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
-    "frontend/src/hooks/useIsAdmin.ts",
-    "frontend/src/hooks/useProduct.ts",
-    "frontend/src/hooks/useProducts.ts",
+    "frontend/src/hooks/useGetCallerUserProfile.ts",
+    "frontend/src/hooks/useLowStockProducts.ts",
+    "frontend/src/hooks/useOrder.ts",
+    "frontend/src/hooks/useOrdersByStatus.ts",
+    "frontend/src/hooks/useRemoveFromCart.ts",
+    "frontend/src/hooks/useSaveCallerUserProfile.ts",
+    "frontend/src/hooks/useUpdateCartQuantity.ts",
+    "frontend/src/hooks/useUpdateOrderStatus.ts",
     "frontend/src/hooks/useUpdateProduct.ts",
+    "frontend/src/hooks/useUserOrders.ts",
     "frontend/src/index.css",
-    "frontend/src/main.tsx",
+    "frontend/src/pages/AdminOrderDetails.tsx",
+    "frontend/src/pages/AdminOrders.tsx",
     "frontend/src/pages/AdminPanel.tsx",
+    "frontend/src/pages/Checkout.tsx",
     "frontend/src/pages/CreateProduct.tsx",
     "frontend/src/pages/EditProduct.tsx",
+    "frontend/src/pages/MyOrders.tsx",
+    "frontend/src/pages/OrderConfirmation.tsx",
+    "frontend/src/pages/OrderDetails.tsx",
     "frontend/src/pages/PublicCatalog.tsx",
-    "frontend/src/utils/urlParams.ts",
+    "frontend/src/translations/translations.ts",
     "frontend/tailwind.config.js",
     "project_state.json"
   ]

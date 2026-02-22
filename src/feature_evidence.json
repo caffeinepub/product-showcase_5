@@ -2,12 +2,16 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-product-catalog-interface-displaying-products-with-images-names-descriptions-and-prices-in-a-visually-appealing-grid-layout",
-      "featureTitle": "Create a product catalog interface displaying products with images, names, descriptions, and prices in a visually appealing grid layout",
+      "featureId": "feature-implement-a-shopping-cart-system-where-users-can-add-products-to-cart-view-cart-contents-with-quantity-adjustments-remove-items-and-see-total-price-calculation",
+      "featureTitle": "Implement a shopping cart system where users can add products to cart, view cart contents with quantity adjustments, remove items, and see total price calculation",
       "files": [
-        "frontend/src/components/ProductCard.tsx",
-        "frontend/src/components/ProductGrid.tsx",
-        "frontend/src/hooks/useProducts.ts",
+        "frontend/src/components/AddToCartButton.tsx",
+        "frontend/src/components/CartDrawer.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/hooks/useAddToCart.ts",
+        "frontend/src/hooks/useCart.ts",
+        "frontend/src/hooks/useRemoveFromCart.ts",
+        "frontend/src/hooks/useUpdateCartQuantity.ts",
         "frontend/src/pages/PublicCatalog.tsx"
       ],
       "components": [
@@ -20,62 +24,117 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-1"
+        "REQ-7"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-a-prominent-whatsapp-contact-button-on-each-product-that-opens-whatsapp-with-a-pre-filled-message-containing-the-product-name",
-      "featureTitle": "Add a prominent WhatsApp contact button on each product that opens WhatsApp with a pre-filled message containing the product name",
-      "files": [
-        "frontend/src/components/WhatsAppButton.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-public-product-browsing-without-any-sign-up-login-or-authentication-requirements-for-visitors",
-      "featureTitle": "Implement public product browsing without any sign-up, login, or authentication requirements for visitors",
-      "files": [
-        "frontend/src/App.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-an-admin-panel-accessible-through-internet-identity-that-allows-adding-editing-and-deleting-products-including-their-names-descriptions-prices-and-images",
-      "featureTitle": "Create an admin panel accessible through Internet Identity that allows adding, editing, and deleting products including their names, descriptions, prices, and images",
+      "featureId": "feature-create-a-cash-on-delivery-cod-checkout-flow-where-users-can-review-cart-provide-shipping-details-name-phone-full-delivery-address-including-city-place-order-without-online-payment-and-receive-order-confirmation",
+      "featureTitle": "Create a cash-on-delivery (COD) checkout flow where users can review cart, provide shipping details (name, phone, full delivery address including city), place order without online payment, and receive order confirmation",
       "files": [
         "frontend/src/App.tsx",
-        "frontend/src/components/AdminGuard.tsx",
+        "frontend/src/components/CartDrawer.tsx",
+        "frontend/src/hooks/useCheckout.ts",
+        "frontend/src/pages/Checkout.tsx",
+        "frontend/src/pages/OrderConfirmation.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-user-registration-and-login-system-using-internet-identity-for-customers-separate-from-admin-authentication-allowing-users-to-track-their-orders-and-maintain-cart-state",
+      "featureTitle": "Implement user registration and login system using Internet Identity for customers, separate from admin authentication, allowing users to track their orders and maintain cart state",
+      "files": [
+        "frontend/src/App.tsx",
         "frontend/src/components/Header.tsx",
-        "frontend/src/components/LoginButton.tsx",
-        "frontend/src/hooks/useCreateProduct.ts",
-        "frontend/src/hooks/useDeleteProduct.ts",
-        "frontend/src/hooks/useIsAdmin.ts",
-        "frontend/src/hooks/useUpdateProduct.ts",
+        "frontend/src/components/ProfileSetupModal.tsx",
+        "frontend/src/hooks/useGetCallerUserProfile.ts",
+        "frontend/src/hooks/useSaveCallerUserProfile.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-order-tracking-system-where-customers-can-view-their-order-history-see-order-status-pending-processing-shipped-delivered-and-track-shipping-progress-for-each-order",
+      "featureTitle": "Add order tracking system where customers can view their order history, see order status (pending, processing, shipped, delivered), and track shipping progress for each order",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/OrderStatusBadge.tsx",
+        "frontend/src/hooks/useOrder.ts",
+        "frontend/src/hooks/useUserOrders.ts",
+        "frontend/src/pages/MyOrders.tsx",
+        "frontend/src/pages/OrderDetails.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-comprehensive-admin-order-management-dashboard-where-admin-can-view-all-customer-orders-see-customer-details-and-shipping-addresses-update-order-statuses-manage-shipping-information-and-mark-orders-as-shipped-or-delivered",
+      "featureTitle": "Create comprehensive admin order management dashboard where admin can view all customer orders, see customer details and shipping addresses, update order statuses, manage shipping information, and mark orders as shipped or delivered",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useAllOrders.ts",
+        "frontend/src/hooks/useOrdersByStatus.ts",
+        "frontend/src/hooks/useUpdateOrderStatus.ts",
+        "frontend/src/pages/AdminOrderDetails.tsx",
+        "frontend/src/pages/AdminOrders.tsx",
+        "frontend/src/pages/AdminPanel.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-inventory-management-to-admin-dashboard-where-admin-can-set-and-track-stock-quantities-for-each-product-receive-low-stock-alerts-and-prevent-orders-when-items-are-out-of-stock",
+      "featureTitle": "Add inventory management to admin dashboard where admin can set and track stock quantities for each product, receive low stock alerts, and prevent orders when items are out of stock",
+      "files": [
+        "frontend/src/components/AddToCartButton.tsx",
+        "frontend/src/components/ProductCard.tsx",
+        "frontend/src/hooks/useLowStockProducts.ts",
         "frontend/src/pages/AdminPanel.tsx",
         "frontend/src/pages/CreateProduct.tsx",
         "frontend/src/pages/EditProduct.tsx"
@@ -90,15 +149,124 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-4"
+        "REQ-12"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-design-a-visually-captivating-and-professional-aesthetic-using-warm-earthy-tones-terracotta-sage-green-cream-with-elegant-serif-typography-for-headings-and-clean-sans-serif-for-body-text-creating-a-modern-boutique-feel-with-generous-whitespace-and-subtle-shadows",
-      "featureTitle": "Design a visually captivating and professional aesthetic using warm, earthy tones (terracotta, sage green, cream) with elegant serif typography for headings and clean sans-serif for body text, creating a modern boutique feel with generous whitespace and subtle shadows",
+      "featureId": "feature-implement-product-search-functionality-with-text-input-allowing-users-to-search-products-by-name-description-or-category-with-instant-results-filtering",
+      "featureTitle": "Implement product search functionality with text input allowing users to search products by name, description, or category, with instant results filtering",
       "files": [
+        "frontend/src/components/ProductSearch.tsx",
+        "frontend/src/pages/PublicCatalog.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-product-category-system-with-categories-including-electronics-clothing-and-others-allowing-admin-to-assign-categories-when-creating-editing-products-and-users-to-filter-catalog-by-category",
+      "featureTitle": "Add product category system with categories including Electronics, Clothing, and others, allowing admin to assign categories when creating/editing products and users to filter catalog by category",
+      "files": [
+        "frontend/src/components/CategoryBadge.tsx",
+        "frontend/src/components/CategoryFilter.tsx",
+        "frontend/src/components/ProductCard.tsx",
+        "frontend/src/pages/CreateProduct.tsx",
+        "frontend/src/pages/EditProduct.tsx",
+        "frontend/src/pages/PublicCatalog.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-nepali-language-option-with-language-toggle-allowing-users-to-switch-between-english-and-nepali-for-all-user-facing-text-including-product-listings-cart-checkout-and-order-pages",
+      "featureTitle": "Implement Nepali language option with language toggle allowing users to switch between English and Nepali for all user-facing text including product listings, cart, checkout, and order pages",
+      "files": [
+        "frontend/src/components/CartDrawer.tsx",
+        "frontend/src/components/CategoryBadge.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/LanguageToggle.tsx",
+        "frontend/src/components/OrderStatusBadge.tsx",
+        "frontend/src/contexts/LanguageContext.tsx",
+        "frontend/src/pages/Checkout.tsx",
+        "frontend/src/pages/MyOrders.tsx",
+        "frontend/src/pages/OrderDetails.tsx",
+        "frontend/src/pages/PublicCatalog.tsx",
+        "frontend/src/translations/translations.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-smooth-animations-throughout-the-app-fade-in-transitions-when-pages-load-sliding-cart-drawer-from-right-side-confirmation-pop-ups-with-scale-in-animation-and-smooth-transitions-between-product-states",
+      "featureTitle": "Add smooth animations throughout the app: fade-in transitions when pages load, sliding cart drawer from right side, confirmation pop-ups with scale-in animation, and smooth transitions between product states",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/CartDrawer.tsx",
+        "frontend/src/components/LoadingSkeleton.tsx",
+        "frontend/src/components/PageTransition.tsx",
+        "frontend/src/components/ProductCard.tsx",
+        "frontend/src/hooks/useAddToCart.ts",
+        "frontend/src/hooks/useCheckout.ts",
+        "frontend/src/pages/PublicCatalog.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-optimize-the-entire-application-for-mobile-responsive-design-with-touch-friendly-controls-ensuring-excellent-user-experience-on-android-and-ios-devices-across-all-screen-sizes-from-320px-to-large-tablets",
+      "featureTitle": "Optimize the entire application for mobile-responsive design with touch-friendly controls, ensuring excellent user experience on Android and iOS devices across all screen sizes from 320px to large tablets",
+      "files": [
+        "frontend/src/components/CartDrawer.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/MobileNav.tsx",
+        "frontend/src/components/ProductCard.tsx",
         "frontend/src/index.css",
+        "frontend/src/pages/Checkout.tsx",
+        "frontend/src/pages/MyOrders.tsx",
         "frontend/tailwind.config.js"
       ],
       "components": [
@@ -111,7 +279,32 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-6"
+        "REQ-17"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-replace-the-warm-earthy-color-scheme-with-a-modern-mobile-e-commerce-design-using-vibrant-trustworthy-colors-suitable-for-a-shopping-app-in-nepal-incorporating-blue-or-green-accent-colors-clean-white-backgrounds-and-ensuring-high-contrast-for-readability-on-mobile-devices",
+      "featureTitle": "Replace the warm earthy color scheme with a modern mobile e-commerce design using vibrant, trustworthy colors suitable for a shopping app in Nepal, incorporating blue or green accent colors, clean white backgrounds, and ensuring high contrast for readability on mobile devices",
+      "files": [
+        "frontend/src/components/AddToCartButton.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/ProductCard.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/Checkout.tsx",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-18"
       ],
       "confidence": "high"
     }

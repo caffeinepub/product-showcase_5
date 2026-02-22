@@ -1,138 +1,279 @@
 {
   "kind": "build_request",
-  "title": "Create commercial product catalog with WhatsApp contact and admin panel",
-  "projectName": "Product Showcase",
+  "title": "Transform product catalog into mobile e-commerce app with cart, COD checkout, and order management",
+  "projectName": "NPJ Shopping",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Create a product catalog interface displaying products with images, names, descriptions, and prices in a visually appealing grid layout",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "make a web site for commercial web site which is stable , facinated"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Products are displayed in a responsive grid layout",
-        "Each product card shows image, name, description, and price",
-        "Layout is visually appealing and professional"
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Add a prominent WhatsApp contact button on each product that opens WhatsApp with a pre-filled message containing the product name",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "when any one want to buy product they can easyly get my wattsapp number"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Each product has a visible WhatsApp button",
-        "Clicking the button opens WhatsApp with product details pre-filled",
-        "Works on both mobile and desktop browsers"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Implement public product browsing without any sign-up, login, or authentication requirements for visitors",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "their no need to do sign up or login they can easyly acces thier"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Visitors can view all products immediately without creating an account",
-        "No login prompts or barriers appear for browsing",
-        "Product catalog loads instantly on page visit"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Create an admin panel accessible through Internet Identity that allows adding, editing, and deleting products including their names, descriptions, prices, and images",
+      "id": "REQ-7",
+      "text": "Implement a shopping cart system where users can add products to cart, view cart contents with quantity adjustments, remove items, and see total price calculation",
       "target": "both",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-last"
         ],
         "quotes": [
-          "provide me domain also for i can easyly access to change the product or rs"
+          "add to cart, checkout with COD"
         ]
       },
       "acceptanceCriteria": [
-        "Admin can log in using Internet Identity",
-        "Admin can create new products with all details",
-        "Admin can edit existing product information and prices",
-        "Admin can delete products from the catalog",
-        "Changes are immediately reflected on the public catalog"
+        "Users can add products to cart from the catalog",
+        "Cart displays all added items with quantities and individual prices",
+        "Users can increase/decrease quantities or remove items from cart",
+        "Cart shows running total of all items",
+        "Cart persists for authenticated users across sessions"
       ]
     },
     {
-      "id": "REQ-5",
-      "text": "Implement backend data model and CRUD operations for products including fields for name, description, price, image URL, and WhatsApp number",
-      "target": "backend",
+      "id": "REQ-8",
+      "text": "Create a cash-on-delivery (COD) checkout flow where users can review cart, provide shipping details (name, phone, full delivery address including city), place order without online payment, and receive order confirmation",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-last"
         ],
         "quotes": [
-          "change the product or rs"
+          "checkout with COD",
+          "shipping details for nationwide delivery including Nepalganj"
         ]
       },
       "acceptanceCriteria": [
-        "Products are stored persistently in stable memory",
-        "CRUD operations support all product fields",
-        "Data persists across canister upgrades",
-        "Products can be retrieved for public display"
+        "Checkout page displays cart summary with total amount",
+        "Form collects customer name, phone number, complete delivery address, and city",
+        "Order is created with 'pending' status upon submission",
+        "Confirmation message displays order ID and estimated delivery timeframe",
+        "No payment processing is required at checkout"
       ]
     },
     {
-      "id": "REQ-6",
-      "text": "Design a visually captivating and professional aesthetic using warm, earthy tones (terracotta, sage green, cream) with elegant serif typography for headings and clean sans-serif for body text, creating a modern boutique feel with generous whitespace and subtle shadows",
+      "id": "REQ-9",
+      "text": "Implement user registration and login system using Internet Identity for customers, separate from admin authentication, allowing users to track their orders and maintain cart state",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "register/login—but no selling or admin features for them"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Customers can register/login using Internet Identity",
+        "Customer authentication is separate from admin privileges",
+        "Logged-in customers can view their order history",
+        "Guest users can browse but must login to checkout",
+        "Customer accounts have no access to admin features"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Add order tracking system where customers can view their order history, see order status (pending, processing, shipped, delivered), and track shipping progress for each order",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "track orders"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Customers can access 'My Orders' page showing all their orders",
+        "Each order displays order ID, date, items, total amount, and current status",
+        "Order statuses include: pending, processing, shipped, delivered",
+        "Customers can click on orders to see detailed shipping information",
+        "Status updates are visible in real-time when admin changes them"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Create comprehensive admin order management dashboard where admin can view all customer orders, see customer details and shipping addresses, update order statuses, manage shipping information, and mark orders as shipped or delivered",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "view orders, and handle shipping details for nationwide delivery"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Admin dashboard displays all orders with customer names, order dates, and statuses",
+        "Admin can filter orders by status (pending, processing, shipped, delivered)",
+        "Clicking an order shows full details: items, quantities, total, customer info, delivery address",
+        "Admin can update order status through dropdown or buttons",
+        "Admin can add/edit shipping notes or tracking information",
+        "Order list shows pending orders prominently for quick processing"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Add inventory management to admin dashboard where admin can set and track stock quantities for each product, receive low stock alerts, and prevent orders when items are out of stock",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "manage inventory"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each product has a stock quantity field visible in admin panel",
+        "Admin can set and update stock levels when adding/editing products",
+        "Products show 'Out of Stock' badge when quantity is zero",
+        "Customers cannot add out-of-stock items to cart",
+        "Admin dashboard highlights products with low stock (< 5 units)",
+        "Stock quantity decreases automatically when orders are placed"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Implement product search functionality with text input allowing users to search products by name, description, or category, with instant results filtering",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-last"
         ],
         "quotes": [
-          "facinated"
+          "search"
         ]
       },
       "acceptanceCriteria": [
-        "Color palette uses warm, earthy tones consistently throughout",
-        "Typography combines serif headings with sans-serif body text",
-        "Layout feels spacious with generous whitespace",
-        "Overall design conveys professionalism and sophistication"
+        "Search bar is prominently placed on the catalog page",
+        "Search filters products by matching name, description, or category",
+        "Results update instantly as user types",
+        "Search is case-insensitive",
+        "Clear button resets search and shows all products"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add product category system with categories including Electronics, Clothing, and others, allowing admin to assign categories when creating/editing products and users to filter catalog by category",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Support categories (e.g., electronics, clothing)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Product data model includes category field",
+        "Admin can select category from dropdown when adding/editing products",
+        "Categories include: Electronics, Clothing, Home & Kitchen, Beauty & Personal Care, Sports & Outdoors",
+        "Catalog page shows category filter buttons or dropdown",
+        "Clicking a category filters products to show only that category",
+        "Products display their category badge on product cards"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Implement Nepali language option with language toggle allowing users to switch between English and Nepali for all user-facing text including product listings, cart, checkout, and order pages",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Nepali language option"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Language toggle button visible in header (English/नेपाली)",
+        "All UI text, labels, buttons, and messages translate to Nepali when selected",
+        "Product names and descriptions remain as entered by admin (not translated)",
+        "Language preference persists across page navigation",
+        "Nepali text uses proper Unicode fonts and displays correctly",
+        "Currency displays as रू (Nepali Rupees) in Nepali mode"
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Add smooth animations throughout the app: fade-in transitions when pages load, sliding cart drawer from right side, confirmation pop-ups with scale-in animation, and smooth transitions between product states",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Add smooth animations like fade-ins for page loads, sliding carts, and confirmation pop-ups"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All page loads use fade-in animation (300ms duration)",
+        "Shopping cart opens as sliding drawer from right side",
+        "Success messages (order placed, item added) appear with scale-in animation",
+        "Product cards have subtle hover lift effect",
+        "Loading states use smooth skeleton animations",
+        "All animations are smooth (60fps) and don't cause layout shifts"
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Optimize the entire application for mobile-responsive design with touch-friendly controls, ensuring excellent user experience on Android and iOS devices across all screen sizes from 320px to large tablets",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Make it responsive for Android/iOS"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All pages are fully responsive on mobile devices (320px - 768px)",
+        "Touch targets are minimum 44x44px for easy tapping",
+        "Product grid adjusts from 1 column on mobile to 4 columns on desktop",
+        "Forms use appropriate mobile input types (tel for phone, text for names)",
+        "Navigation is mobile-friendly with hamburger menu if needed",
+        "Cart drawer slides smoothly on mobile touch gestures",
+        "No horizontal scrolling on any screen size"
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "text": "Replace the warm earthy color scheme with a modern mobile e-commerce design using vibrant, trustworthy colors suitable for a shopping app in Nepal, incorporating blue or green accent colors, clean white backgrounds, and ensuring high contrast for readability on mobile devices",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Primary color scheme uses trustworthy blue or energetic green tones",
+        "Background is clean white or very light gray for product visibility",
+        "Accent colors highlight calls-to-action (Add to Cart, Checkout buttons)",
+        "Text contrast meets WCAG AA standards on all backgrounds",
+        "Color scheme conveys trust and professionalism for online shopping",
+        "Design feels modern and aligned with popular e-commerce apps"
       ]
     }
   ],
   "constraints": [
-    "Public product browsing must work without any authentication",
-    "Admin features must be protected by Internet Identity authentication",
-    "All product data must persist across canister upgrades"
+    "Do not change the existing Internet Identity authentication system for admin access",
+    "Maintain the single-actor backend architecture with all logic in backend/main.mo",
+    "Do not modify immutable frontend paths: useInternetIdentity.ts, useActor.ts, main.tsx, or components/ui",
+    "All customer features must be separate from admin features with proper authorization",
+    "Cash-on-delivery is the only payment method; do not integrate online payment gateways"
   ],
   "nonGoals": [
-    "Payment processing or checkout functionality",
-    "User accounts or customer login system",
-    "Shopping cart features",
-    "Order tracking or management",
-    "Email notifications"
+    "Online payment processing (credit cards, digital wallets, etc.)",
+    "Real-time chat or messaging features",
+    "Social media integration or sharing",
+    "Customer reviews or ratings system",
+    "Wishlist or favorites functionality",
+    "Product recommendations or AI features",
+    "Multi-vendor or marketplace functionality",
+    "Email notifications or SMS alerts",
+    "Advanced analytics or reporting dashboards"
   ],
   "imageRequirements": {
     "required": [
-      "Hero banner image showing elegant product display setup with warm lighting (hero-banner.dim_1920x600.png)",
-      "Placeholder product image for items without photos, minimalist design (product-placeholder.dim_400x400.png)"
+      "Modern shopping cart icon in blue or green accent color, simple line style (cart-icon.dim_64x64.png)",
+      "Nepal location/map pin icon for delivery address sections (nepal-pin.dim_48x48.png)",
+      "Mobile-friendly hero banner showing happy Nepal customer receiving package, warm and trustworthy feel (hero-mobile.dim_800x400.png)"
     ],
     "edits": []
   }

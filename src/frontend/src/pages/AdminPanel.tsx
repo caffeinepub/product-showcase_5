@@ -1,138 +1,161 @@
 import { Link } from '@tanstack/react-router';
 import { useProducts } from '../hooks/useProducts';
 import { useDeleteProduct } from '../hooks/useDeleteProduct';
-import { Plus, Edit, Trash2, Loader2, Package } from 'lucide-react';
-import { useState } from 'react';
+import { useLowStockProducts } from '../hooks/useLowStockProducts';
+import { useLanguage } from '../contexts/LanguageContext';
+import { Loader2, Plus, Edit, Trash2, Package, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import CategoryBadge from '../components/CategoryBadge';
 
 export default function AdminPanel() {
   const { data: products, isLoading } = useProducts();
+  const { data: lowStockProducts } = useLowStockProducts(BigInt(5));
   const deleteProduct = useDeleteProduct();
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const { t, language } = useLanguage();
+  const currency = language === 'ne' ? 'रू' : '₹';
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
-
-    setDeletingId(id);
-    try {
-      await deleteProduct.mutateAsync(id);
-    } finally {
-      setDeletingId(null);
+    if (window.confirm(`${t('deleteProduct')} "${name}"?`)) {
+      try {
+        await deleteProduct.mutateAsync(id);
+      } catch (error) {
+        console.error('Failed to delete product:', error);
+        alert(t('error'));
+      }
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="space-y-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-serif text-3xl md:text-4xl font-semibold">Admin Panel</h1>
-            <p className="text-muted-foreground mt-2">Manage your product catalog</p>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold">{t('manageProducts')}</h1>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link to="/admin/orders">
+              <Button variant="outline" className="w-full sm:w-auto min-h-[44px]">
+                <Package className="h-4 w-4 mr-2" />
+                {t('manageOrders')}
+              </Button>
+            </Link>
+            <Link to="/admin/create">
+              <Button className="w-full sm:w-auto min-h-[44px]">
+                <Plus className="h-4 w-4 mr-2" />
+                {t('addProduct')}
+              </Button>
+            </Link>
           </div>
-          <Link
-            to="/admin/create"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-sm hover:shadow"
-          >
-            <Plus className="h-5 w-5" />
-            <span>Add Product</span>
-          </Link>
         </div>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        {lowStockProducts && lowStockProducts.length > 0 && (
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-yellow-900 dark:text-yellow-100">{t('lowStockAlert')}</h3>
+                <p className="text-sm text-yellow-800 dark:text-yellow-200 mt-1">
+                  {lowStockProducts.length} {t('productsLowStock')}
+                </p>
+              </div>
+            </div>
           </div>
-        ) : !products || products.length === 0 ? (
-          <div className="text-center py-16 bg-muted/30 rounded-xl">
-            <Package className="h-16 w-16 text-muted-foreground/50 mx-auto mb-4" />
-            <h3 className="font-serif text-xl font-semibold mb-2">No products yet</h3>
-            <p className="text-muted-foreground mb-6">Get started by adding your first product</p>
-            <Link
-              to="/admin/create"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
-            >
-              <Plus className="h-5 w-5" />
-              <span>Add Product</span>
+        )}
+
+        {!products || products.length === 0 ? (
+          <div className="text-center py-16 space-y-4">
+            <Package className="h-16 w-16 text-muted-foreground/30 mx-auto" />
+            <p className="text-muted-foreground text-lg">{t('noProductsFound')}</p>
+            <Link to="/admin/create">
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                {t('addProduct')}
+              </Button>
             </Link>
           </div>
         ) : (
           <div className="bg-card rounded-xl shadow-soft overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-muted/50 border-b">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Product</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Description</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Price</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">WhatsApp</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-20">{t('image')}</TableHead>
+                    <TableHead>{t('productName')}</TableHead>
+                    <TableHead className="hidden md:table-cell">{t('category')}</TableHead>
+                    <TableHead>{t('price')}</TableHead>
+                    <TableHead>{t('stock')}</TableHead>
+                    <TableHead className="text-right">{t('actions')}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {products.map((product) => {
-                    const imageUrl = product.image.getDirectURL();
-                    const price = Number(product.price);
-                    const isDeleting = deletingId === product.id;
+                    const stock = Number(product.stock);
+                    const isLowStock = stock > 0 && stock < 5;
+                    const isOutOfStock = stock === 0;
 
                     return (
-                      <tr key={product.id} className="hover:bg-muted/30 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                              {imageUrl ? (
-                                <img
-                                  src={imageUrl}
-                                  alt={product.name}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                  <Package className="h-6 w-6 text-muted-foreground/30" />
-                                </div>
-                              )}
-                            </div>
-                            <span className="font-medium">{product.name}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className="text-sm text-muted-foreground line-clamp-2 max-w-md">
-                            {product.description}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="font-semibold text-primary">₹{price.toLocaleString()}</span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="text-sm text-muted-foreground">{product.whatsappNumber}</span>
-                        </td>
-                        <td className="px-6 py-4">
+                      <TableRow key={product.id}>
+                        <TableCell>
+                          <img
+                            src={product.image.getDirectURL()}
+                            alt={product.name}
+                            className="w-16 h-16 object-cover rounded-lg"
+                          />
+                        </TableCell>
+                        <TableCell className="font-medium">{product.name}</TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <CategoryBadge category={product.category} />
+                        </TableCell>
+                        <TableCell className="font-semibold">
+                          {currency}{Number(product.price).toLocaleString()}
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold ${
+                              isOutOfStock
+                                ? 'bg-destructive/10 text-destructive'
+                                : isLowStock
+                                ? 'bg-yellow-500/10 text-yellow-600'
+                                : 'bg-green-500/10 text-green-600'
+                            }`}
+                          >
+                            {isOutOfStock && <AlertCircle className="h-3 w-3" />}
+                            {isLowStock && <AlertCircle className="h-3 w-3" />}
+                            {stock}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <Link
-                              to="/admin/edit/$id"
-                              params={{ id: product.id }}
-                              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-colors"
-                            >
-                              <Edit className="h-4 w-4" />
-                              <span>Edit</span>
+                            <Link to="/admin/edit/$id" params={{ id: product.id }}>
+                              <Button variant="ghost" size="sm" className="min-h-[36px] min-w-[36px]">
+                                <Edit className="h-4 w-4" />
+                              </Button>
                             </Link>
-                            <button
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               onClick={() => handleDelete(product.id, product.name)}
-                              disabled={isDeleting}
-                              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
+                              disabled={deleteProduct.isPending}
+                              className="text-destructive hover:text-destructive hover:bg-destructive/10 min-h-[36px] min-w-[36px]"
                             >
-                              {isDeleting ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <Trash2 className="h-4 w-4" />
-                              )}
-                              <span>Delete</span>
-                            </button>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     );
                   })}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </div>
         )}

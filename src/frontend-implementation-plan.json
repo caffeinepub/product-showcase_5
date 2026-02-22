@@ -1,158 +1,594 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Frontend Implementation Plan for Product Showcase",
+  "title": "Transform product catalog into mobile e-commerce app with cart, COD checkout, and order management",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Create a product catalog interface displaying products with images, names, descriptions, and prices in a visually appealing grid layout",
+      "id": "REQ-7",
+      "summary": "Implement shopping cart system with add to cart, quantity adjustments, item removal, and total price calculation",
       "acceptanceCriteria": [
-        "Products are displayed in a responsive grid layout",
-        "Each product card shows image, name, description, and price",
-        "Layout is visually appealing and professional"
+        "Users can add products to cart from the catalog",
+        "Cart displays all added items with quantities and individual prices",
+        "Users can increase/decrease quantities or remove items from cart",
+        "Cart shows running total of all items",
+        "Cart persists for authenticated users across sessions"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/ProductCard.tsx",
+          "path": "frontend/src/hooks/useCart.ts",
           "operation": "create",
-          "description": "Create a reusable ProductCard component that displays a single product with image, name, description, and price. Use the ExternalBlob.getDirectURL() method to display product images efficiently with streaming and caching. Apply warm earthy color palette and elegant typography. Include the WhatsApp contact button from REQ-2."
+          "description": "Create React Query hook to fetch cart contents using getCart() from backend, enabled only when user is authenticated"
         },
         {
-          "path": "frontend/src/components/ProductGrid.tsx",
+          "path": "frontend/src/hooks/useAddToCart.ts",
           "operation": "create",
-          "description": "Create a ProductGrid component that renders multiple ProductCard components in a responsive grid layout using Tailwind grid classes. Ensure generous whitespace and professional spacing between cards."
+          "description": "Create mutation hook for addToCart(productId, quantity) that invalidates cart query on success"
         },
         {
-          "path": "frontend/src/hooks/useProducts.ts",
+          "path": "frontend/src/hooks/useUpdateCartQuantity.ts",
           "operation": "create",
-          "description": "Create a custom hook that fetches products from the backend using getProducts() method. Use react-query for caching and state management. Handle loading and error states. No authentication required for fetching products."
+          "description": "Create mutation hook for updateCartQuantity(productId, quantity) that invalidates cart query on success"
         },
         {
-          "path": "frontend/src/pages/PublicCatalog.tsx",
+          "path": "frontend/src/hooks/useRemoveFromCart.ts",
           "operation": "create",
-          "description": "Create the main public product catalog page that uses ProductGrid to display all products. Include the hero banner image from frontend/public/assets/generated/hero-banner.dim_1920x600.png at the top of the page. Handle loading states and empty states gracefully. This page is accessible without authentication."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Add a prominent WhatsApp contact button on each product that opens WhatsApp with a pre-filled message containing the product name",
-      "acceptanceCriteria": [
-        "Each product has a visible WhatsApp button",
-        "Clicking the button opens WhatsApp with product details pre-filled",
-        "Works on both mobile and desktop browsers"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/WhatsAppButton.tsx",
-          "operation": "create",
-          "description": "Create a WhatsAppButton component that accepts product name and WhatsApp number as props. Generate a WhatsApp URL with pre-filled message including product name (e.g., wa.me/{number}?text=Hi, I'm interested in {productName}). Use an anchor tag with target='_blank' to open WhatsApp. Style with prominent green color and WhatsApp icon. Works on both mobile (opens app) and desktop (opens web.whatsapp.com)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Implement public product browsing without any sign-up, login, or authentication requirements for visitors",
-      "acceptanceCriteria": [
-        "Visitors can view all products immediately without creating an account",
-        "No login prompts or barriers appear for browsing",
-        "Product catalog loads instantly on page visit"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Update the main App component to set PublicCatalog as the default landing page at the root route (/). Ensure no authentication guards block access to the public catalog. Keep admin routes protected but public catalog accessible to all visitors including anonymous principals."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Create an admin panel accessible through Internet Identity that allows adding, editing, and deleting products including their names, descriptions, prices, and images",
-      "acceptanceCriteria": [
-        "Admin can log in using Internet Identity",
-        "Admin can create new products with all details",
-        "Admin can edit existing product information and prices",
-        "Admin can delete products from the catalog",
-        "Changes are immediately reflected on the public catalog"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AdminPanel.tsx",
-          "operation": "create",
-          "description": "Create an admin panel page that displays all products in a table/list format with edit and delete actions. Use the authorization component to verify admin access with isCallerAdmin() before rendering. Show access denied message if user is not admin. Include a button to navigate to the product creation form."
+          "description": "Create mutation hook for removeFromCart(productId) that invalidates cart query on success"
         },
         {
-          "path": "frontend/src/pages/CreateProduct.tsx",
+          "path": "frontend/src/components/CartDrawer.tsx",
           "operation": "create",
-          "description": "Create a product creation form page with fields for name, description, price, WhatsApp number, and image upload. Use ExternalBlob.fromBytes() for image uploads with withUploadProgress() to show upload progress. Call createProduct() backend method on submission. Use the blob-storage component for handling image uploads. Verify the blob-storage component's usage instructions before implementing. Guard with admin-only access check. Navigate back to admin panel on success."
+          "description": "Create sliding drawer component from right side displaying cart items with product image, name, price, quantity controls (+/-), remove button, and total calculation. Include empty cart state and checkout button."
         },
         {
-          "path": "frontend/src/pages/EditProduct.tsx",
+          "path": "frontend/src/components/AddToCartButton.tsx",
           "operation": "create",
-          "description": "Create a product editing form page that loads existing product data using getProduct(id) and allows editing all fields. Use ExternalBlob for image replacement with upload progress tracking. Call updateProduct() backend method on submission. Verify the blob-storage component's usage instructions before implementing. Guard with admin-only access check. Navigate back to admin panel on success."
-        },
-        {
-          "path": "frontend/src/hooks/useCreateProduct.ts",
-          "operation": "create",
-          "description": "Create a custom hook that wraps the createProduct() backend method using react-query mutation. Handle success, error, and loading states. Invalidate products query cache on success to trigger refetch."
-        },
-        {
-          "path": "frontend/src/hooks/useUpdateProduct.ts",
-          "operation": "create",
-          "description": "Create a custom hook that wraps the updateProduct() backend method using react-query mutation. Handle success, error, and loading states. Invalidate products query cache on success."
-        },
-        {
-          "path": "frontend/src/hooks/useDeleteProduct.ts",
-          "operation": "create",
-          "description": "Create a custom hook that wraps the deleteProduct() backend method using react-query mutation. Handle success, error, and loading states. Invalidate products query cache on success."
-        },
-        {
-          "path": "frontend/src/components/AdminGuard.tsx",
-          "operation": "create",
-          "description": "Create an AdminGuard wrapper component that checks if the user is authenticated and has admin role using isCallerAdmin(). Show loading state while checking. Display access denied message if not admin. Render children if admin. Use the authorization component to enforce admin-only access."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Add routes for /admin, /admin/create, and /admin/edit/:id. Wrap admin routes with AdminGuard component to enforce authentication and admin role verification. Add navigation link to admin panel in the header that is only visible to authenticated admins."
-        },
-        {
-          "path": "frontend/src/components/LoginButton.tsx",
-          "operation": "create",
-          "description": "Create a LoginButton component following the authorization component's login component pattern. Handle login/logout with Internet Identity. Clear query cache on logout. Display login status and disable during authentication flow."
+          "description": "Create button component that accepts productId and stock, checks authentication before adding to cart, shows loading state during mutation, and displays success feedback"
         },
         {
           "path": "frontend/src/components/Header.tsx",
-          "operation": "create",
-          "description": "Create a Header component that includes the site branding, LoginButton, and conditional admin panel link (only shown to admins). Use isCallerAdmin() to conditionally render admin navigation. Apply warm earthy color scheme and elegant typography."
+          "operation": "modify",
+          "description": "Add cart icon button with item count badge in header that opens CartDrawer. Use generated cart-icon.dim_64x64.png from frontend/public/assets/generated/cart-icon.dim_64x64.png. Show cart only for authenticated users."
         },
         {
-          "path": "frontend/src/hooks/useIsAdmin.ts",
-          "operation": "create",
-          "description": "Create a custom hook that checks if the current user is an admin using isCallerAdmin() backend method. Use react-query with proper dependency on authentication state. Return loading and admin status."
+          "path": "frontend/src/pages/PublicCatalog.tsx",
+          "operation": "modify",
+          "description": "Add AddToCartButton to each ProductCard for authenticated users. Replace WhatsApp-only flow with e-commerce cart flow for logged-in users while keeping WhatsApp button for guests."
         }
       ]
     },
     {
-      "id": "REQ-6",
-      "summary": "Design a visually captivating and professional aesthetic using warm, earthy tones (terracotta, sage green, cream) with elegant serif typography for headings and clean sans-serif for body text, creating a modern boutique feel with generous whitespace and subtle shadows",
+      "id": "REQ-8",
+      "summary": "Create COD checkout flow with shipping details form, order placement, and confirmation",
       "acceptanceCriteria": [
-        "Color palette uses warm, earthy tones consistently throughout",
-        "Typography combines serif headings with sans-serif body text",
-        "Layout feels spacious with generous whitespace",
-        "Overall design conveys professionalism and sophistication"
+        "Checkout page displays cart summary with total amount",
+        "Form collects customer name, phone number, complete delivery address, and city",
+        "Order is created with 'pending' status upon submission",
+        "Confirmation message displays order ID and estimated delivery timeframe",
+        "No payment processing is required at checkout"
       ],
       "file_operations": [
         {
-          "path": "frontend/tailwind.config.js",
+          "path": "frontend/src/hooks/useCheckout.ts",
+          "operation": "create",
+          "description": "Create mutation hook for checkout(shippingDetails) that returns order ID, invalidates cart and orders queries on success"
+        },
+        {
+          "path": "frontend/src/pages/Checkout.tsx",
+          "operation": "create",
+          "description": "Create checkout page displaying cart summary with items, quantities, prices, and total. Include form with fields for name, phone (tel input type), complete address (textarea), and city (text input). Submit button calls checkout mutation and navigates to confirmation page on success. Include Nepal location icon from frontend/public/assets/generated/nepal-pin.dim_48x48.png in address section."
+        },
+        {
+          "path": "frontend/src/pages/OrderConfirmation.tsx",
+          "operation": "create",
+          "description": "Create order confirmation page that displays order ID from URL params, success message, estimated delivery timeframe (5-7 business days for nationwide delivery), and button to view order details or return to catalog"
+        },
+        {
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Extend Tailwind configuration to include custom color palette with warm earthy tones: terracotta (#E07A5F or similar), sage green (#81B29A or similar), cream (#F4F1DE or similar), and complementary neutrals. Add custom font families for serif headings (e.g., Playfair Display, Lora) and sans-serif body text (e.g., Inter, Open Sans). Configure font weights and line heights for elegant typography."
+          "description": "Add routes for /checkout and /order-confirmation/:orderId pages with proper authentication guards"
+        },
+        {
+          "path": "frontend/src/components/CartDrawer.tsx",
+          "operation": "modify",
+          "description": "Add 'Proceed to Checkout' button that navigates to /checkout route when cart has items"
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Implement user registration and login with Internet Identity for customers, allowing order tracking and cart persistence",
+      "acceptanceCriteria": [
+        "Customers can register/login using Internet Identity",
+        "Customer authentication is separate from admin privileges",
+        "Logged-in customers can view their order history",
+        "Guest users can browse but must login to checkout",
+        "Customer accounts have no access to admin features"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useGetCallerUserProfile.ts",
+          "operation": "create",
+          "description": "Create query hook for getCallerUserProfile() with proper loading state handling to prevent modal flash. Use the authorization component's pattern: return custom state with isLoading that accounts for actorFetching, and isFetched that checks both actor and query.isFetched."
+        },
+        {
+          "path": "frontend/src/hooks/useSaveCallerUserProfile.ts",
+          "operation": "create",
+          "description": "Create mutation hook for saveCallerUserProfile(profile) that invalidates currentUserProfile query on success"
+        },
+        {
+          "path": "frontend/src/components/ProfileSetupModal.tsx",
+          "operation": "create",
+          "description": "Create modal component for first-time user profile setup. Display when authenticated user has no profile. Form collects name, phone, address, and city. Submit calls saveCallerUserProfile mutation. Use authorization component's pattern to prevent flash: show only when isAuthenticated && !profileLoading && isFetched && userProfile === null."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Display user name from profile instead of showing principal ID. Show LoginButton with proper authentication flow. For customers, do not show admin panel link."
+        },
+        {
+          "path": "frontend/src/components/LoginButton.tsx",
+          "operation": "modify",
+          "description": "Clear query cache on logout including user profile and cart data to ensure clean state"
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add ProfileSetupModal to root layout so it appears after login when needed"
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Add order tracking system where customers view order history, status, and shipping progress",
+      "acceptanceCriteria": [
+        "Customers can access 'My Orders' page showing all their orders",
+        "Each order displays order ID, date, items, total amount, and current status",
+        "Order statuses include: pending, processing, shipped, delivered",
+        "Customers can click on orders to see detailed shipping information",
+        "Status updates are visible in real-time when admin changes them"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useUserOrders.ts",
+          "operation": "create",
+          "description": "Create query hook for getUserOrders() that fetches current user's orders, enabled only when authenticated"
+        },
+        {
+          "path": "frontend/src/hooks/useOrder.ts",
+          "operation": "create",
+          "description": "Create query hook for getOrder(orderId) that fetches single order details by ID"
+        },
+        {
+          "path": "frontend/src/pages/MyOrders.tsx",
+          "operation": "create",
+          "description": "Create customer orders page displaying order list with order ID, date (formatted from timestamp), status badge with color coding (pending: yellow, processing: blue, shipped: purple, delivered: green), total amount, and item count. Each order is clickable to navigate to order details page."
+        },
+        {
+          "path": "frontend/src/pages/OrderDetails.tsx",
+          "operation": "create",
+          "description": "Create order details page showing order ID from URL params, order status with visual timeline/progress indicator, order items list with product names, quantities, and prices, total amount, shipping details (name, phone, address, city), and order timestamp. Include back button to My Orders."
+        },
+        {
+          "path": "frontend/src/components/OrderStatusBadge.tsx",
+          "operation": "create",
+          "description": "Create reusable badge component for order status display with color coding: pending (yellow), processing (blue), shipped (purple), delivered (green)"
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add routes for /my-orders and /order/:orderId pages with authentication guards"
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add 'My Orders' navigation link for authenticated customers (visible when logged in and not on admin panel)"
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Create admin order management dashboard to view all orders, customer details, update statuses, and manage shipping",
+      "acceptanceCriteria": [
+        "Admin dashboard displays all orders with customer names, order dates, and statuses",
+        "Admin can filter orders by status (pending, processing, shipped, delivered)",
+        "Clicking an order shows full details: items, quantities, total, customer info, delivery address",
+        "Admin can update order status through dropdown or buttons",
+        "Admin can add/edit shipping notes or tracking information",
+        "Order list shows pending orders prominently for quick processing"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useAllOrders.ts",
+          "operation": "create",
+          "description": "Create query hook for getAllOrders() that fetches all customer orders for admin view"
+        },
+        {
+          "path": "frontend/src/hooks/useOrdersByStatus.ts",
+          "operation": "create",
+          "description": "Create query hook for getOrdersByStatus(status) that fetches filtered orders by status"
+        },
+        {
+          "path": "frontend/src/hooks/useUpdateOrderStatus.ts",
+          "operation": "create",
+          "description": "Create mutation hook for updateOrderStatus(orderId, status) that invalidates orders queries on success"
+        },
+        {
+          "path": "frontend/src/pages/AdminOrders.tsx",
+          "operation": "create",
+          "description": "Create admin orders management page with filter tabs/buttons for order status (All, Pending, Processing, Shipped, Delivered). Display orders table with columns: Order ID, Customer Name (from user profile lookup), Date, Status, Total, and Actions. Highlight pending orders. Each row clickable to view order details."
+        },
+        {
+          "path": "frontend/src/pages/AdminOrderDetails.tsx",
+          "operation": "create",
+          "description": "Create admin order details page showing full order information: order ID, status with update dropdown/buttons (pending/processing/shipped/delivered), customer details (name, phone, address, city), ordered items with quantities and prices, total amount, and timestamp. Include status update controls using useUpdateOrderStatus hook."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add routes for /admin/orders and /admin/order/:orderId pages wrapped with AdminGuard"
+        },
+        {
+          "path": "frontend/src/pages/AdminPanel.tsx",
+          "operation": "modify",
+          "description": "Add navigation link or button to 'Manage Orders' that navigates to /admin/orders route"
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Add inventory management with stock tracking, low stock alerts, and out-of-stock prevention",
+      "acceptanceCriteria": [
+        "Each product has a stock quantity field visible in admin panel",
+        "Admin can set and update stock levels when adding/editing products",
+        "Products show 'Out of Stock' badge when quantity is zero",
+        "Customers cannot add out-of-stock items to cart",
+        "Admin dashboard highlights products with low stock (< 5 units)",
+        "Stock quantity decreases automatically when orders are placed"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useProductStock.ts",
+          "operation": "create",
+          "description": "Create query hook for getProductStock(productId) to fetch current stock level for a product"
+        },
+        {
+          "path": "frontend/src/hooks/useLowStockProducts.ts",
+          "operation": "create",
+          "description": "Create query hook for getLowStockProducts(threshold) with threshold set to 5 to fetch products needing restocking"
+        },
+        {
+          "path": "frontend/src/pages/CreateProduct.tsx",
+          "operation": "modify",
+          "description": "Add stock quantity input field (number type, minimum 0) to product creation form. Include in createProduct mutation call."
+        },
+        {
+          "path": "frontend/src/pages/EditProduct.tsx",
+          "operation": "modify",
+          "description": "Add stock quantity input field (number type, minimum 0) to product edit form, pre-filled with current stock value. Include in updateProduct mutation call."
+        },
+        {
+          "path": "frontend/src/pages/AdminPanel.tsx",
+          "operation": "modify",
+          "description": "Add stock column to products table showing current quantity. Highlight low stock products (< 5 units) with warning color/icon. Add optional low stock products filter or section at top of page."
+        },
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "modify",
+          "description": "Display 'Out of Stock' badge when product.stock is 0. Show stock level indicator for low stock items (< 5). Hide or disable add to cart functionality when out of stock."
+        },
+        {
+          "path": "frontend/src/components/AddToCartButton.tsx",
+          "operation": "modify",
+          "description": "Disable button when product stock is 0, display 'Out of Stock' text. Check stock availability before allowing add to cart action."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Implement product search with text input for filtering by name, description, or category",
+      "acceptanceCriteria": [
+        "Search bar is prominently placed on the catalog page",
+        "Search filters products by matching name, description, or category",
+        "Results update instantly as user types",
+        "Search is case-insensitive",
+        "Clear button resets search and shows all products"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ProductSearch.tsx",
+          "operation": "create",
+          "description": "Create search input component with text input field, search icon, and clear button (X). Use controlled input with onChange handler. Include debouncing for performance. Display search result count."
+        },
+        {
+          "path": "frontend/src/pages/PublicCatalog.tsx",
+          "operation": "modify",
+          "description": "Add ProductSearch component above ProductGrid. Implement local filtering logic that searches through product name, description, and category fields (case-insensitive). Update displayed products based on search term. Show 'No products found' message when search returns empty results."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Add product category system with Electronics, Clothing, Home & Kitchen, Beauty, Sports categories and filtering",
+      "acceptanceCriteria": [
+        "Product data model includes category field",
+        "Admin can select category from dropdown when adding/editing products",
+        "Categories include: Electronics, Clothing, Home & Kitchen, Beauty & Personal Care, Sports & Outdoors",
+        "Catalog page shows category filter buttons or dropdown",
+        "Clicking a category filters products to show only that category",
+        "Products display their category badge on product cards"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useProductsByCategory.ts",
+          "operation": "create",
+          "description": "Create query hook for getProductsByCategory(category) that fetches filtered products by category"
+        },
+        {
+          "path": "frontend/src/components/CategoryFilter.tsx",
+          "operation": "create",
+          "description": "Create category filter component with buttons or pills for each category: Electronics, Clothing, Home & Kitchen, Beauty & Personal Care, Sports & Outdoors. Include 'All' option to clear filter. Highlight active category."
+        },
+        {
+          "path": "frontend/src/components/CategoryBadge.tsx",
+          "operation": "create",
+          "description": "Create category badge component that displays product category with appropriate color coding: Electronics (blue), Clothing (purple), Home & Kitchen (green), Beauty & Personal Care (pink), Sports & Outdoors (orange)"
+        },
+        {
+          "path": "frontend/src/pages/CreateProduct.tsx",
+          "operation": "modify",
+          "description": "Add category dropdown/select field to product creation form with options: electronics, clothing, home, books (mapped as Beauty & Personal Care), sports. Include in createProduct mutation call."
+        },
+        {
+          "path": "frontend/src/pages/EditProduct.tsx",
+          "operation": "modify",
+          "description": "Add category dropdown/select field to product edit form, pre-selected with current category. Include in updateProduct mutation call."
+        },
+        {
+          "path": "frontend/src/pages/PublicCatalog.tsx",
+          "operation": "modify",
+          "description": "Add CategoryFilter component above product grid (below search). Implement category filtering by calling useProductsByCategory when category is selected, or useProducts for all categories. Combine with search filtering if search term is present."
+        },
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "modify",
+          "description": "Add CategoryBadge component to display product category on each product card"
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Implement Nepali language toggle with translation for all UI text while keeping product content unchanged",
+      "acceptanceCriteria": [
+        "Language toggle button visible in header (English/नेपाली)",
+        "All UI text, labels, buttons, and messages translate to Nepali when selected",
+        "Product names and descriptions remain as entered by admin (not translated)",
+        "Language preference persists across page navigation",
+        "Nepali text uses proper Unicode fonts and displays correctly",
+        "Currency displays as रू (Nepali Rupees) in Nepali mode"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/contexts/LanguageContext.tsx",
+          "operation": "create",
+          "description": "Create language context provider with state for current language (en/ne), toggle function, and translation dictionary for all UI strings. Persist language preference in localStorage. Provide useLanguage hook."
+        },
+        {
+          "path": "frontend/src/translations/translations.ts",
+          "operation": "create",
+          "description": "Create translation dictionary with English and Nepali translations for all UI text: navigation labels, buttons, form labels, messages, status labels (pending/processing/shipped/delivered), category names, error messages, etc. Use proper Nepali Unicode text."
+        },
+        {
+          "path": "frontend/src/components/LanguageToggle.tsx",
+          "operation": "create",
+          "description": "Create language toggle button component that switches between English and नेपाली. Display current language. Call language toggle function from context."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add LanguageToggle component to header navigation. Use translation context for header text (if any UI labels exist)."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Wrap app with LanguageProvider to make language context available throughout the app"
+        },
+        {
+          "path": "frontend/src/pages/PublicCatalog.tsx",
+          "operation": "modify",
+          "description": "Use translation context for all UI text: search placeholder, filter labels, empty state messages, loading text. Keep product names and descriptions untranslated."
+        },
+        {
+          "path": "frontend/src/pages/Checkout.tsx",
+          "operation": "modify",
+          "description": "Use translation context for all form labels (Name, Phone, Address, City), button text, validation messages. Format currency with रू symbol in Nepali mode."
+        },
+        {
+          "path": "frontend/src/pages/MyOrders.tsx",
+          "operation": "modify",
+          "description": "Use translation context for page title, column headers, status labels, empty state message. Format currency appropriately."
+        },
+        {
+          "path": "frontend/src/pages/OrderDetails.tsx",
+          "operation": "modify",
+          "description": "Use translation context for all labels and status text. Format currency and dates appropriately for selected language."
+        },
+        {
+          "path": "frontend/src/components/CartDrawer.tsx",
+          "operation": "modify",
+          "description": "Use translation context for cart title, quantity labels, total label, checkout button text, empty cart message. Format currency with रू in Nepali mode."
+        },
+        {
+          "path": "frontend/src/components/OrderStatusBadge.tsx",
+          "operation": "modify",
+          "description": "Use translation context to display status text in selected language: pending (पेन्डिङ), processing (प्रक्रियामा), shipped (पठाइएको), delivered (डेलिभर भयो)"
+        },
+        {
+          "path": "frontend/src/components/CategoryBadge.tsx",
+          "operation": "modify",
+          "description": "Use translation context to display category names in selected language"
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Add smooth animations: fade-in page loads, sliding cart drawer, scale-in confirmations, hover effects",
+      "acceptanceCriteria": [
+        "All page loads use fade-in animation (300ms duration)",
+        "Shopping cart opens as sliding drawer from right side",
+        "Success messages (order placed, item added) appear with scale-in animation",
+        "Product cards have subtle hover lift effect",
+        "Loading states use smooth skeleton animations",
+        "All animations are smooth (60fps) and don't cause layout shifts"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PageTransition.tsx",
+          "operation": "create",
+          "description": "Create page transition wrapper component using CSS transitions or Framer Motion for fade-in effect (300ms duration, ease-out). Apply to all page loads."
+        },
+        {
+          "path": "frontend/src/components/CartDrawer.tsx",
+          "operation": "modify",
+          "description": "Add sliding animation from right side when drawer opens/closes. Use CSS transitions with transform: translateX or Framer Motion. Include backdrop with fade-in animation. Ensure 60fps performance with transform and opacity only."
+        },
+        {
+          "path": "frontend/src/components/Toast.tsx",
+          "operation": "create",
+          "description": "Create toast notification component for success/error messages with scale-in animation (transform: scale(0.9) to scale(1), 200ms duration). Auto-dismiss after 3 seconds. Position fixed at top or bottom."
+        },
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "modify",
+          "description": "Add hover lift effect using CSS transition on transform: translateY(-4px) and box-shadow increase. Use transition duration 200ms ease-out. Ensure no layout shift."
+        },
+        {
+          "path": "frontend/src/components/LoadingSkeleton.tsx",
+          "operation": "create",
+          "description": "Create skeleton loading component with shimmer animation for product cards and lists. Use gradient animation with background-position. Apply to loading states across app."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap route components with PageTransition for consistent fade-in effect on navigation"
+        },
+        {
+          "path": "frontend/src/pages/PublicCatalog.tsx",
+          "operation": "modify",
+          "description": "Use LoadingSkeleton component instead of plain loading text when products are loading"
+        },
+        {
+          "path": "frontend/src/hooks/useAddToCart.ts",
+          "operation": "modify",
+          "description": "Trigger Toast notification on successful add to cart with 'Item added to cart' message"
+        },
+        {
+          "path": "frontend/src/hooks/useCheckout.ts",
+          "operation": "modify",
+          "description": "Trigger Toast notification on successful checkout before navigation"
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Optimize for mobile-responsive design with touch-friendly controls across all screen sizes (320px to tablets)",
+      "acceptanceCriteria": [
+        "All pages are fully responsive on mobile devices (320px - 768px)",
+        "Touch targets are minimum 44x44px for easy tapping",
+        "Product grid adjusts from 1 column on mobile to 4 columns on desktop",
+        "Forms use appropriate mobile input types (tel for phone, text for names)",
+        "Navigation is mobile-friendly with hamburger menu if needed",
+        "Cart drawer slides smoothly on mobile touch gestures",
+        "No horizontal scrolling on any screen size"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ProductGrid.tsx",
+          "operation": "modify",
+          "description": "Update grid to use responsive Tailwind classes: grid-cols-1 (mobile), sm:grid-cols-2 (tablet), md:grid-cols-3, lg:grid-cols-4. Ensure proper gap spacing for touch interaction."
+        },
+        {
+          "path": "frontend/src/components/MobileNav.tsx",
+          "operation": "create",
+          "description": "Create mobile navigation component with hamburger menu for small screens. Include navigation links, language toggle, cart icon, and user profile/login. Use slide-in animation from left. Show/hide based on screen size breakpoint."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Make header responsive: show MobileNav (hamburger menu) on small screens, full horizontal navigation on desktop. Ensure cart icon and login button are minimum 44x44px touch targets. Test on 320px width."
+        },
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "modify",
+          "description": "Ensure all interactive elements (buttons, links) are minimum 44x44px touch targets. Make card layout stack vertically on mobile with adequate spacing. Test image responsiveness."
+        },
+        {
+          "path": "frontend/src/pages/Checkout.tsx",
+          "operation": "modify",
+          "description": "Use mobile-appropriate input types: type='tel' for phone input, type='text' for name and address. Ensure form fields are adequately sized for touch input (min-height 44px). Use single-column layout on mobile, two-column on tablet+. Add proper spacing between fields."
+        },
+        {
+          "path": "frontend/src/components/CartDrawer.tsx",
+          "operation": "modify",
+          "description": "Optimize drawer width for mobile (full width on small screens, max-width on desktop). Ensure quantity controls are touch-friendly (44x44px minimum). Test swipe-to-close gesture on mobile. Add proper padding for thumb zones."
+        },
+        {
+          "path": "frontend/src/pages/MyOrders.tsx",
+          "operation": "modify",
+          "description": "Use card-based layout on mobile instead of table. Stack order information vertically. Ensure touch targets for order items are adequate. Test on 320px width."
         },
         {
           "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Import Google Fonts for the serif and sans-serif typefaces. Apply global typography styles with serif fonts for h1-h6 headings and sans-serif for body text. Set up base colors from the warm earthy palette. Add utility classes for subtle shadows and generous spacing. Ensure professional and sophisticated aesthetic throughout."
+          "description": "Add responsive font sizes using clamp() or Tailwind responsive classes. Ensure base font size is readable on mobile (minimum 16px for inputs to prevent zoom). Add mobile-first media queries. Prevent horizontal scroll with max-width and overflow-x-hidden on body."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Configure mobile-first breakpoints if needed. Add custom spacing for touch-friendly layouts. Ensure all interactive utilities support minimum 44x44px touch targets."
+        }
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "summary": "Replace warm earthy colors with modern mobile e-commerce design using blue or green accents, white backgrounds, high contrast",
+      "acceptanceCriteria": [
+        "Primary color scheme uses trustworthy blue or energetic green tones",
+        "Background is clean white or very light gray for product visibility",
+        "Accent colors highlight calls-to-action (Add to Cart, Checkout buttons)",
+        "Text contrast meets WCAG AA standards on all backgrounds",
+        "Color scheme conveys trust and professionalism for online shopping",
+        "Design feels modern and aligned with popular e-commerce apps"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Replace existing warm earthy OKLCH color variables with modern e-commerce palette: primary blue (--primary: oklch(0.55 0.22 250)) or green (oklch(0.60 0.18 150)), white background (--background: oklch(1 0 0)), light gray secondary background (oklch(0.98 0 0)), high contrast text colors for WCAG AA compliance. Update --accent for CTAs with vibrant blue/green matching primary."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Update color theme to match new palette: primary (blue or green), background (white), secondary (light gray), accent for CTAs. Ensure colors map correctly to CSS variables. Configure high-contrast text colors. Update button, badge, and card styling to use new professional e-commerce colors."
+        },
+        {
+          "path": "frontend/src/components/ProductCard.tsx",
+          "operation": "modify",
+          "description": "Update styling to use new color scheme: white card background, subtle shadow, blue/green accent on hover, high contrast text. Ensure professional e-commerce appearance."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Update header styling with new color scheme: white or very light gray background, primary color for branding/logo text, accent color for cart badge, high contrast navigation text"
+        },
+        {
+          "path": "frontend/src/components/AddToCartButton.tsx",
+          "operation": "modify",
+          "description": "Style button with accent color background (vibrant blue or green), white text, proper hover state with darker shade, ensure WCAG AA contrast ratio"
+        },
+        {
+          "path": "frontend/src/pages/Checkout.tsx",
+          "operation": "modify",
+          "description": "Apply new color scheme: white background, primary color for headings, accent color for checkout button, high contrast form labels and inputs"
         }
       ]
     }

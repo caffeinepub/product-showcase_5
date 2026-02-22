@@ -24,15 +24,54 @@ export const UserRole = IDL.Variant({
   'user' : IDL.Null,
   'guest' : IDL.Null,
 });
+export const ShippingDetails = IDL.Record({
+  'city' : IDL.Text,
+  'name' : IDL.Text,
+  'address' : IDL.Text,
+  'phone' : IDL.Text,
+});
 export const ExternalBlob = IDL.Vec(IDL.Nat8);
-export const UserProfile = IDL.Record({ 'name' : IDL.Text });
+export const ProductCategory = IDL.Variant({
+  'clothing' : IDL.Null,
+  'home' : IDL.Null,
+  'books' : IDL.Null,
+  'sports' : IDL.Null,
+  'electronics' : IDL.Null,
+});
+export const OrderStatus = IDL.Variant({
+  'shipped' : IDL.Null,
+  'pending' : IDL.Null,
+  'delivered' : IDL.Null,
+  'processing' : IDL.Null,
+});
 export const Product = IDL.Record({
   'id' : IDL.Text,
   'name' : IDL.Text,
   'description' : IDL.Text,
   'whatsappNumber' : IDL.Text,
+  'stock' : IDL.Nat,
+  'category' : ProductCategory,
   'image' : ExternalBlob,
   'price' : IDL.Nat,
+});
+export const CartItem = IDL.Record({
+  'quantity' : IDL.Nat,
+  'product' : Product,
+});
+export const Order = IDL.Record({
+  'id' : IDL.Text,
+  'status' : OrderStatus,
+  'total' : IDL.Nat,
+  'user' : IDL.Principal,
+  'timestamp' : IDL.Nat,
+  'items' : IDL.Vec(CartItem),
+  'shippingDetails' : ShippingDetails,
+});
+export const UserProfile = IDL.Record({
+  'city' : IDL.Text,
+  'name' : IDL.Text,
+  'address' : IDL.Text,
+  'phone' : IDL.Text,
 });
 
 export const idlService = IDL.Service({
@@ -63,26 +102,61 @@ export const idlService = IDL.Service({
     ),
   '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'addToCart' : IDL.Func([IDL.Text, IDL.Nat], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'checkout' : IDL.Func([ShippingDetails], [IDL.Text], []),
+  'clearCart' : IDL.Func([], [], []),
   'createProduct' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Nat, ExternalBlob, IDL.Text],
+      [
+        IDL.Text,
+        IDL.Text,
+        IDL.Nat,
+        ExternalBlob,
+        IDL.Text,
+        ProductCategory,
+        IDL.Nat,
+      ],
       [IDL.Text],
       [],
     ),
   'deleteProduct' : IDL.Func([IDL.Text], [], []),
+  'getAllOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getCart' : IDL.Func([], [IDL.Vec(CartItem)], ['query']),
+  'getLowStockProducts' : IDL.Func([IDL.Nat], [IDL.Vec(Product)], ['query']),
+  'getOrder' : IDL.Func([IDL.Text], [Order], ['query']),
+  'getOrdersByStatus' : IDL.Func([OrderStatus], [IDL.Vec(Order)], ['query']),
   'getProduct' : IDL.Func([IDL.Text], [Product], ['query']),
+  'getProductStock' : IDL.Func([IDL.Text], [IDL.Nat], ['query']),
   'getProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+  'getProductsByCategory' : IDL.Func(
+      [ProductCategory],
+      [IDL.Vec(Product)],
+      ['query'],
+    ),
+  'getUserOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
       [IDL.Opt(UserProfile)],
       ['query'],
     ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'removeFromCart' : IDL.Func([IDL.Text], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'updateCartQuantity' : IDL.Func([IDL.Text, IDL.Nat], [], []),
+  'updateOrderStatus' : IDL.Func([IDL.Text, OrderStatus], [], []),
   'updateProduct' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, IDL.Nat, ExternalBlob, IDL.Text],
+      [
+        IDL.Text,
+        IDL.Text,
+        IDL.Text,
+        IDL.Nat,
+        ExternalBlob,
+        IDL.Text,
+        ProductCategory,
+        IDL.Nat,
+      ],
       [],
       [],
     ),
@@ -107,15 +181,51 @@ export const idlFactory = ({ IDL }) => {
     'user' : IDL.Null,
     'guest' : IDL.Null,
   });
+  const ShippingDetails = IDL.Record({
+    'city' : IDL.Text,
+    'name' : IDL.Text,
+    'address' : IDL.Text,
+    'phone' : IDL.Text,
+  });
   const ExternalBlob = IDL.Vec(IDL.Nat8);
-  const UserProfile = IDL.Record({ 'name' : IDL.Text });
+  const ProductCategory = IDL.Variant({
+    'clothing' : IDL.Null,
+    'home' : IDL.Null,
+    'books' : IDL.Null,
+    'sports' : IDL.Null,
+    'electronics' : IDL.Null,
+  });
+  const OrderStatus = IDL.Variant({
+    'shipped' : IDL.Null,
+    'pending' : IDL.Null,
+    'delivered' : IDL.Null,
+    'processing' : IDL.Null,
+  });
   const Product = IDL.Record({
     'id' : IDL.Text,
     'name' : IDL.Text,
     'description' : IDL.Text,
     'whatsappNumber' : IDL.Text,
+    'stock' : IDL.Nat,
+    'category' : ProductCategory,
     'image' : ExternalBlob,
     'price' : IDL.Nat,
+  });
+  const CartItem = IDL.Record({ 'quantity' : IDL.Nat, 'product' : Product });
+  const Order = IDL.Record({
+    'id' : IDL.Text,
+    'status' : OrderStatus,
+    'total' : IDL.Nat,
+    'user' : IDL.Principal,
+    'timestamp' : IDL.Nat,
+    'items' : IDL.Vec(CartItem),
+    'shippingDetails' : ShippingDetails,
+  });
+  const UserProfile = IDL.Record({
+    'city' : IDL.Text,
+    'name' : IDL.Text,
+    'address' : IDL.Text,
+    'phone' : IDL.Text,
   });
   
   return IDL.Service({
@@ -146,26 +256,61 @@ export const idlFactory = ({ IDL }) => {
       ),
     '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'addToCart' : IDL.Func([IDL.Text, IDL.Nat], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'checkout' : IDL.Func([ShippingDetails], [IDL.Text], []),
+    'clearCart' : IDL.Func([], [], []),
     'createProduct' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Nat, ExternalBlob, IDL.Text],
+        [
+          IDL.Text,
+          IDL.Text,
+          IDL.Nat,
+          ExternalBlob,
+          IDL.Text,
+          ProductCategory,
+          IDL.Nat,
+        ],
         [IDL.Text],
         [],
       ),
     'deleteProduct' : IDL.Func([IDL.Text], [], []),
+    'getAllOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getCart' : IDL.Func([], [IDL.Vec(CartItem)], ['query']),
+    'getLowStockProducts' : IDL.Func([IDL.Nat], [IDL.Vec(Product)], ['query']),
+    'getOrder' : IDL.Func([IDL.Text], [Order], ['query']),
+    'getOrdersByStatus' : IDL.Func([OrderStatus], [IDL.Vec(Order)], ['query']),
     'getProduct' : IDL.Func([IDL.Text], [Product], ['query']),
+    'getProductStock' : IDL.Func([IDL.Text], [IDL.Nat], ['query']),
     'getProducts' : IDL.Func([], [IDL.Vec(Product)], ['query']),
+    'getProductsByCategory' : IDL.Func(
+        [ProductCategory],
+        [IDL.Vec(Product)],
+        ['query'],
+      ),
+    'getUserOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(UserProfile)],
         ['query'],
       ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'removeFromCart' : IDL.Func([IDL.Text], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'updateCartQuantity' : IDL.Func([IDL.Text, IDL.Nat], [], []),
+    'updateOrderStatus' : IDL.Func([IDL.Text, OrderStatus], [], []),
     'updateProduct' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Nat, ExternalBlob, IDL.Text],
+        [
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Nat,
+          ExternalBlob,
+          IDL.Text,
+          ProductCategory,
+          IDL.Nat,
+        ],
         [],
         [],
       ),

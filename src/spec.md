@@ -1,14 +1,20 @@
 # Specification
 
 ## Summary
-**Goal:** Create a commercial product catalog website with WhatsApp contact integration and an admin panel for product management.
+**Goal:** Transform the product catalog into a full mobile e-commerce app with shopping cart, cash-on-delivery checkout, customer authentication, order tracking, admin order management, inventory control, search, categories, Nepali language support, smooth animations, and mobile-optimized design.
 
 **Planned changes:**
-- Build a public product catalog displaying products in a responsive grid with images, names, descriptions, and prices
-- Add WhatsApp contact buttons on each product that open WhatsApp with pre-filled product details
-- Enable public browsing without any authentication or sign-up requirements
-- Create an admin panel protected by Internet Identity for adding, editing, and deleting products
-- Implement backend CRUD operations for products with persistent storage
-- Design with warm, earthy color palette (terracotta, sage green, cream) and elegant typography
+- Add shopping cart system with add/remove items, quantity adjustment, and total calculation
+- Implement COD checkout flow with shipping details form (name, phone, address, city)
+- Add customer authentication using Internet Identity (separate from admin)
+- Create order tracking for customers to view order history and status
+- Build admin order management dashboard to view/update orders and shipping details
+- Add inventory management with stock quantities and out-of-stock prevention
+- Implement product search by name, description, or category
+- Add product category system (Electronics, Clothing, Home & Kitchen, Beauty & Personal Care, Sports & Outdoors)
+- Add Nepali language toggle for all UI text
+- Implement smooth animations (fade-ins, sliding cart drawer, confirmation pop-ups)
+- Optimize for mobile-responsive design with touch-friendly controls
+- Replace color scheme with modern mobile e-commerce design using blue/green accents and clean white backgrounds
 
-**User-visible outcome:** Visitors can browse products and contact via WhatsApp instantly. Admin can manage the product catalog through a secure admin panel using Internet Identity authentication.
+**User-visible outcome:** Customers can browse products, search and filter by category, add items to cart, register/login, checkout with cash-on-delivery by providing shipping details, track their orders, and use the app in English or Nepali with smooth animations on mobile devices. Admin can manage inventory, view all orders, update order statuses, and handle shipping information.

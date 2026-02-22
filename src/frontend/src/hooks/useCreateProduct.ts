@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import { type ExternalBlob } from '../backend';
+import { type ExternalBlob, type ProductCategory } from '../backend';
 
 interface CreateProductParams {
   name: string;
@@ -8,6 +8,8 @@ interface CreateProductParams {
   price: bigint;
   image: ExternalBlob;
   whatsappNumber: string;
+  category: ProductCategory;
+  stock: bigint;
 }
 
 export function useCreateProduct() {
@@ -22,7 +24,9 @@ export function useCreateProduct() {
         params.description,
         params.price,
         params.image,
-        params.whatsappNumber
+        params.whatsappNumber,
+        params.category,
+        params.stock
       );
     },
     onSuccess: () => {

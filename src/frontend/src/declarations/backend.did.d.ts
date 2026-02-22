@@ -10,16 +10,48 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface CartItem { 'quantity' : bigint, 'product' : Product }
 export type ExternalBlob = Uint8Array;
+export interface Order {
+  'id' : string,
+  'status' : OrderStatus,
+  'total' : bigint,
+  'user' : Principal,
+  'timestamp' : bigint,
+  'items' : Array<CartItem>,
+  'shippingDetails' : ShippingDetails,
+}
+export type OrderStatus = { 'shipped' : null } |
+  { 'pending' : null } |
+  { 'delivered' : null } |
+  { 'processing' : null };
 export interface Product {
   'id' : string,
   'name' : string,
   'description' : string,
   'whatsappNumber' : string,
+  'stock' : bigint,
+  'category' : ProductCategory,
   'image' : ExternalBlob,
   'price' : bigint,
 }
-export interface UserProfile { 'name' : string }
+export type ProductCategory = { 'clothing' : null } |
+  { 'home' : null } |
+  { 'books' : null } |
+  { 'sports' : null } |
+  { 'electronics' : null };
+export interface ShippingDetails {
+  'city' : string,
+  'name' : string,
+  'address' : string,
+  'phone' : string,
+}
+export interface UserProfile {
+  'city' : string,
+  'name' : string,
+  'address' : string,
+  'phone' : string,
+}
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
   { 'guest' : null };
@@ -51,21 +83,44 @@ export interface _SERVICE {
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'addToCart' : ActorMethod<[string, bigint], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'checkout' : ActorMethod<[ShippingDetails], string>,
+  'clearCart' : ActorMethod<[], undefined>,
   'createProduct' : ActorMethod<
-    [string, string, bigint, ExternalBlob, string],
+    [string, string, bigint, ExternalBlob, string, ProductCategory, bigint],
     string
   >,
   'deleteProduct' : ActorMethod<[string], undefined>,
+  'getAllOrders' : ActorMethod<[], Array<Order>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getCart' : ActorMethod<[], Array<CartItem>>,
+  'getLowStockProducts' : ActorMethod<[bigint], Array<Product>>,
+  'getOrder' : ActorMethod<[string], Order>,
+  'getOrdersByStatus' : ActorMethod<[OrderStatus], Array<Order>>,
   'getProduct' : ActorMethod<[string], Product>,
+  'getProductStock' : ActorMethod<[string], bigint>,
   'getProducts' : ActorMethod<[], Array<Product>>,
+  'getProductsByCategory' : ActorMethod<[ProductCategory], Array<Product>>,
+  'getUserOrders' : ActorMethod<[], Array<Order>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
+  'removeFromCart' : ActorMethod<[string], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'updateCartQuantity' : ActorMethod<[string, bigint], undefined>,
+  'updateOrderStatus' : ActorMethod<[string, OrderStatus], undefined>,
   'updateProduct' : ActorMethod<
-    [string, string, string, bigint, ExternalBlob, string],
+    [
+      string,
+      string,
+      string,
+      bigint,
+      ExternalBlob,
+      string,
+      ProductCategory,
+      bigint,
+    ],
     undefined
   >,
 }

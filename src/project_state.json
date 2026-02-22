@@ -1,15 +1,22 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
-  "summary": "Commercial website for product sales with WhatsApp contact integration, no user authentication required, and admin access for product management",
+  "projectStateVersion": 5,
+  "summary": "Mobile e-commerce app for NPJ Shopping in Nepal with cash-on-delivery payments, secure admin dashboard for product/inventory/order/shipping management, user authentication for customers to browse/search/cart/checkout/track orders, category support, Nepali language option, smooth animations, and responsive Android/iOS design",
   "architectural_notes": [
-    "Public-facing product catalog with no authentication barrier",
-    "WhatsApp integration for customer contact",
-    "Separate admin interface for content management"
+    "Mobile-first e-commerce app for Android/iOS",
+    "Cash-on-delivery payment system (no online payment gateway)",
+    "Dual user roles: regular customers (browse/shop/track) and admin (full management)",
+    "Customer authentication system with registration/login",
+    "Shopping cart and checkout flow",
+    "Order tracking and management system",
+    "Product categorization and search",
+    "Multi-language support (English/Nepali)",
+    "Smooth UI animations throughout the app",
+    "Secure backend for data storage and admin access"
   ],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Hero banner image showing elegant product display setup with warm lighting (hero-banner.dim_1920x600.png)\n- Placeholder product image for items without photos, minimalist design (product-placeholder.dim_400x400.png)",
+  "imageRequirements": "## Required Images\n- Modern shopping cart icon in blue or green accent color, simple line style (cart-icon.dim_64x64.png)\n- Nepal location/map pin icon for delivery address sections (nepal-pin.dim_48x48.png)\n- Mobile-friendly hero banner showing happy Nepal customer receiving package, warm and trustworthy feel (hero-mobile.dim_800x400.png)",
   "existing_features": [
     {
       "id": "feature-create-a-product-catalog-interface-displaying-products-with-images-names-descriptions-and-prices-in-a-visually-appealing-grid-layout",
@@ -50,21 +57,105 @@
         "REQ-6"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-implement-a-shopping-cart-system-where-users-can-add-products-to-cart-view-cart-contents-with-quantity-adjustments-remove-items-and-see-total-price-calculation",
+      "title": "Implement a shopping cart system where users can add products to cart, view cart contents with quantity adjustments, remove items, and see total price calculation",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-cash-on-delivery-cod-checkout-flow-where-users-can-review-cart-provide-shipping-details-name-phone-full-delivery-address-including-city-place-order-without-online-payment-and-receive-order-confirmation",
+      "title": "Create a cash-on-delivery (COD) checkout flow where users can review cart, provide shipping details (name, phone, full delivery address including city), place order without online payment, and receive order confirmation",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-user-registration-and-login-system-using-internet-identity-for-customers-separate-from-admin-authentication-allowing-users-to-track-their-orders-and-maintain-cart-state",
+      "title": "Implement user registration and login system using Internet Identity for customers, separate from admin authentication, allowing users to track their orders and maintain cart state",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-order-tracking-system-where-customers-can-view-their-order-history-see-order-status-pending-processing-shipped-delivered-and-track-shipping-progress-for-each-order",
+      "title": "Add order tracking system where customers can view their order history, see order status (pending, processing, shipped, delivered), and track shipping progress for each order",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-comprehensive-admin-order-management-dashboard-where-admin-can-view-all-customer-orders-see-customer-details-and-shipping-addresses-update-order-statuses-manage-shipping-information-and-mark-orders-as-shipped-or-delivered",
+      "title": "Create comprehensive admin order management dashboard where admin can view all customer orders, see customer details and shipping addresses, update order statuses, manage shipping information, and mark orders as shipped or delivered",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-inventory-management-to-admin-dashboard-where-admin-can-set-and-track-stock-quantities-for-each-product-receive-low-stock-alerts-and-prevent-orders-when-items-are-out-of-stock",
+      "title": "Add inventory management to admin dashboard where admin can set and track stock quantities for each product, receive low stock alerts, and prevent orders when items are out of stock",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-product-search-functionality-with-text-input-allowing-users-to-search-products-by-name-description-or-category-with-instant-results-filtering",
+      "title": "Implement product search functionality with text input allowing users to search products by name, description, or category, with instant results filtering",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-product-category-system-with-categories-including-electronics-clothing-and-others-allowing-admin-to-assign-categories-when-creating-editing-products-and-users-to-filter-catalog-by-category",
+      "title": "Add product category system with categories including Electronics, Clothing, and others, allowing admin to assign categories when creating/editing products and users to filter catalog by category",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-nepali-language-option-with-language-toggle-allowing-users-to-switch-between-english-and-nepali-for-all-user-facing-text-including-product-listings-cart-checkout-and-order-pages",
+      "title": "Implement Nepali language option with language toggle allowing users to switch between English and Nepali for all user-facing text including product listings, cart, checkout, and order pages",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-smooth-animations-throughout-the-app-fade-in-transitions-when-pages-load-sliding-cart-drawer-from-right-side-confirmation-pop-ups-with-scale-in-animation-and-smooth-transitions-between-product-states",
+      "title": "Add smooth animations throughout the app: fade-in transitions when pages load, sliding cart drawer from right side, confirmation pop-ups with scale-in animation, and smooth transitions between product states",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-optimize-the-entire-application-for-mobile-responsive-design-with-touch-friendly-controls-ensuring-excellent-user-experience-on-android-and-ios-devices-across-all-screen-sizes-from-320px-to-large-tablets",
+      "title": "Optimize the entire application for mobile-responsive design with touch-friendly controls, ensuring excellent user experience on Android and iOS devices across all screen sizes from 320px to large tablets",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-warm-earthy-color-scheme-with-a-modern-mobile-e-commerce-design-using-vibrant-trustworthy-colors-suitable-for-a-shopping-app-in-nepal-incorporating-blue-or-green-accent-colors-clean-white-backgrounds-and-ensuring-high-contrast-for-readability-on-mobile-devices",
+      "title": "Replace the warm earthy color scheme with a modern mobile e-commerce design using vibrant, trustworthy colors suitable for a shopping app in Nepal, incorporating blue or green accent colors, clean white backgrounds, and ensuring high contrast for readability on mobile devices",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
-    {
-      "id": "AR-1",
-      "summary": "Display products with WhatsApp contact button",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "No sign up or login required for visitors",
-      "reqIds": [],
-      "status": "pending"
-    },
     {
       "id": "AR-3",
       "summary": "Admin panel for product and price management",
@@ -77,6 +168,84 @@
       "reqIds": [
         "REQ-5"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Implement cash-on-delivery (COD) payment system for checkout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add user registration and login system for customers",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Create shopping cart functionality with add to cart feature",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Implement product search functionality",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add order tracking system for customers",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Implement inventory management in admin dashboard",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Add order management and viewing system for admin",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Implement shipping details management for nationwide delivery including Nepalganj",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add product categories support (electronics, clothing, etc.)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Implement Nepali language option",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Add smooth animations: fade-ins for page loads, sliding carts, confirmation pop-ups",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Make app responsive for Android/iOS mobile platforms",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-21",
+      "summary": "Implement secure login for admin dashboard (password-protected)",
+      "reqIds": [],
       "status": "pending"
     }
   ],

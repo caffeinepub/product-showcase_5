@@ -2,23 +2,34 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useProduct } from '../hooks/useProduct';
 import { useUpdateProduct } from '../hooks/useUpdateProduct';
-import { ExternalBlob } from '../backend';
+import { useLanguage } from '../contexts/LanguageContext';
+import { ExternalBlob, ProductCategory } from '../backend';
 import { ArrowLeft, Save, Loader2, Image as ImageIcon } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 
 export default function EditProduct() {
   const { id } = useParams({ from: '/admin/edit/$id' });
   const navigate = useNavigate();
   const { data: product, isLoading: isLoadingProduct } = useProduct(id);
   const updateProduct = useUpdateProduct();
+  const { t, language } = useLanguage();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [category, setCategory] = useState<ProductCategory>(ProductCategory.electronics);
+  const [stock, setStock] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  const currency = language === 'ne' ? 'रू' : '₹';
 
   useEffect(() => {
     if (product) {
@@ -26,6 +37,8 @@ export default function EditProduct() {
       setDescription(product.description);
       setPrice(product.price.toString());
       setWhatsappNumber(product.whatsappNumber);
+      setCategory(product.category);
+      setStock(product.stock.toString());
       setImagePreview(product.image.getDirectURL());
     }
   }, [product]);
@@ -57,7 +70,7 @@ export default function EditProduct() {
       } else if (product) {
         imageBlob = product.image;
       } else {
-        alert('Image is required');
+        alert(t('image') + ' ' + t('required'));
         return;
       }
 
@@ -68,12 +81,14 @@ export default function EditProduct() {
         price: BigInt(price),
         image: imageBlob,
         whatsappNumber,
+        category,
+        stock: BigInt(stock),
       });
 
       navigate({ to: '/admin' });
     } catch (error) {
       console.error('Failed to update product:', error);
-      alert('Failed to update product. Please try again.');
+      alert(t('error'));
     }
   };
 
@@ -91,7 +106,7 @@ export default function EditProduct() {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center">
-          <p className="text-destructive">Product not found</p>
+          <p className="text-destructive">{t('error')}</p>
         </div>
       </div>
     );
@@ -100,104 +115,122 @@ export default function EditProduct() {
   const isSubmitting = updateProduct.isPending;
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="max-w-2xl mx-auto space-y-8">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
         <div>
           <Link
             to="/admin"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Back to Admin Panel</span>
+            <span>{t('back')}</span>
           </Link>
-          <h1 className="font-serif text-3xl md:text-4xl font-semibold">Edit Product</h1>
-          <p className="text-muted-foreground mt-2">Update product details</p>
+          <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold">{t('editProduct')}</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-card rounded-xl shadow-soft p-6 md:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-card rounded-xl shadow-soft p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
           <div className="space-y-2">
-            <label htmlFor="name" className="block text-sm font-medium">
-              Product Name *
-            </label>
-            <input
+            <Label htmlFor="name">{t('productName')} *</Label>
+            <Input
               id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-2.5 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="Enter product name"
+              placeholder={t('productName')}
+              className="min-h-[48px]"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="description" className="block text-sm font-medium">
-              Description *
-            </label>
-            <textarea
+            <Label htmlFor="description">{t('description')} *</Label>
+            <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
               rows={4}
-              className="w-full px-4 py-2.5 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-              placeholder="Describe your product"
+              placeholder={t('description')}
             />
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="price" className="block text-sm font-medium">
-              Price (₹) *
-            </label>
-            <input
-              id="price"
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-              min="0"
-              step="1"
-              className="w-full px-4 py-2.5 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="0"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="price">{t('price')} ({currency}) *</Label>
+              <Input
+                id="price"
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                min="0"
+                step="1"
+                placeholder="0"
+                className="min-h-[48px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="stock">{t('stock')} *</Label>
+              <Input
+                id="stock"
+                type="number"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+                required
+                min="0"
+                step="1"
+                placeholder="0"
+                className="min-h-[48px]"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="whatsapp" className="block text-sm font-medium">
-              WhatsApp Number *
-            </label>
-            <input
+            <Label htmlFor="category">{t('category')} *</Label>
+            <Select value={category} onValueChange={(value) => setCategory(value as ProductCategory)}>
+              <SelectTrigger className="min-h-[48px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={ProductCategory.electronics}>{t('electronics')}</SelectItem>
+                <SelectItem value={ProductCategory.clothing}>{t('clothing')}</SelectItem>
+                <SelectItem value={ProductCategory.home}>{t('homeKitchen')}</SelectItem>
+                <SelectItem value={ProductCategory.books}>{t('beautyPersonalCare')}</SelectItem>
+                <SelectItem value={ProductCategory.sports}>{t('sportsOutdoors')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="whatsapp">{t('whatsappNumber')} *</Label>
+            <Input
               id="whatsapp"
               type="tel"
               value={whatsappNumber}
               onChange={(e) => setWhatsappNumber(e.target.value)}
               required
-              className="w-full px-4 py-2.5 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="+91 1234567890"
+              placeholder="+977 1234567890"
+              className="min-h-[48px]"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="image" className="block text-sm font-medium">
-              Product Image *
-            </label>
+            <Label htmlFor="image">{t('image')} *</Label>
             <div className="space-y-4">
               {imagePreview ? (
                 <div className="relative aspect-square w-full max-w-sm mx-auto rounded-lg overflow-hidden bg-muted">
                   <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                  <label
-                    htmlFor="image"
-                    className="absolute top-2 right-2 px-3 py-1.5 bg-background/90 hover:bg-background rounded-lg text-sm font-medium transition-colors cursor-pointer"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImageFile(null);
+                      setImagePreview(product?.image.getDirectURL() || null);
+                    }}
+                    className="absolute top-2 right-2 px-3 py-1.5 bg-background/90 hover:bg-background rounded-lg text-sm font-medium transition-colors"
                   >
-                    Change
-                  </label>
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
+                    {t('cancel')}
+                  </button>
                 </div>
               ) : (
                 <label
@@ -206,8 +239,7 @@ export default function EditProduct() {
                 >
                   <div className="flex flex-col items-center justify-center py-8">
                     <ImageIcon className="h-12 w-12 text-muted-foreground mb-3" />
-                    <p className="text-sm font-medium mb-1">Click to upload image</p>
-                    <p className="text-xs text-muted-foreground">PNG, JPG up to 10MB</p>
+                    <p className="text-sm font-medium mb-1">{t('image')}</p>
                   </div>
                   <input
                     id="image"
@@ -222,7 +254,7 @@ export default function EditProduct() {
               {uploadProgress > 0 && uploadProgress < 100 && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Uploading...</span>
+                    <span className="text-muted-foreground">{t('loading')}</span>
                     <span className="font-medium">{uploadProgress}%</span>
                   </div>
                   <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
@@ -236,30 +268,32 @@ export default function EditProduct() {
             </div>
           </div>
 
-          <div className="flex gap-4 pt-4">
-            <button
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 min-h-[48px]"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  <span>Saving...</span>
+                  <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                  {t('updating')}
                 </>
               ) : (
                 <>
-                  <Save className="h-5 w-5" />
-                  <span>Save Changes</span>
+                  <Save className="h-5 w-5 mr-2" />
+                  {t('save')}
                 </>
               )}
-            </button>
-            <Link
-              to="/admin"
-              className="px-6 py-3 bg-muted hover:bg-muted/80 text-foreground rounded-lg font-medium transition-colors"
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => navigate({ to: '/admin' })}
+              className="min-h-[48px]"
             >
-              Cancel
-            </Link>
+              {t('cancel')}
+            </Button>
           </div>
         </form>
       </div>
