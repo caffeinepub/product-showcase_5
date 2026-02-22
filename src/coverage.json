@@ -1,347 +1,103 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-22T04:43:42.650Z",
+  "generatedAt": "2026-02-22T05:21:17.278Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 12,
-    "implemented": 12,
+    "total": 5,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-10",
-        "summary": "Add order tracking system where customers can view their order history, see order status (pending, processing, shipped, delivered), and track shipping progress for each order",
+        "id": "REQ-19",
+        "summary": "Create an admin dashboard page displaying key business metrics including total products count, total orders count, pending orders count, low stock products count, and total revenue from all completed orders",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useUserOrders.ts",
-          "frontend/src/hooks/useOrder.ts",
-          "frontend/src/pages/MyOrders.tsx",
-          "frontend/src/pages/OrderDetails.tsx",
-          "frontend/src/components/OrderStatusBadge.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/Header.tsx"
+          "frontend/src/pages/AdminDashboard.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useUserOrders.ts",
-          "frontend/src/hooks/useOrder.ts",
-          "frontend/src/pages/MyOrders.tsx",
-          "frontend/src/pages/OrderDetails.tsx",
-          "frontend/src/components/OrderStatusBadge.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/Header.tsx"
+          "frontend/src/pages/AdminDashboard.tsx"
         ]
       },
       {
-        "id": "REQ-11",
-        "summary": "Create comprehensive admin order management dashboard where admin can view all customer orders, see customer details and shipping addresses, update order statuses, manage shipping information, and mark orders as shipped or delivered",
+        "id": "REQ-20",
+        "summary": "Add backend query methods to retrieve aggregated statistics: getTotalProducts, getTotalOrders, getPendingOrdersCount, getLowStockCount, and getTotalRevenue",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-21",
+        "summary": "Create custom React hooks for each dashboard statistic: useTotalProducts, useTotalOrders, usePendingOrders, useLowStockCount, and useTotalRevenue that fetch data from the backend",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useAllOrders.ts",
-          "frontend/src/hooks/useOrdersByStatus.ts",
-          "frontend/src/hooks/useUpdateOrderStatus.ts",
-          "frontend/src/pages/AdminOrders.tsx",
-          "frontend/src/pages/AdminOrderDetails.tsx",
+          "frontend/src/hooks/useTotalProducts.ts",
+          "frontend/src/hooks/useTotalOrders.ts",
+          "frontend/src/hooks/usePendingOrders.ts",
+          "frontend/src/hooks/useLowStockCount.ts",
+          "frontend/src/hooks/useTotalRevenue.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useTotalProducts.ts",
+          "frontend/src/hooks/useTotalOrders.ts",
+          "frontend/src/hooks/usePendingOrders.ts",
+          "frontend/src/hooks/useLowStockCount.ts",
+          "frontend/src/hooks/useTotalRevenue.ts"
+        ]
+      },
+      {
+        "id": "REQ-22",
+        "summary": "Add a navigation link to the admin dashboard from the AdminPanel page header and from the main Header component when user is logged in as admin",
+        "status": "implemented",
+        "plannedFiles": [
           "frontend/src/App.tsx",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/MobileNav.tsx",
           "frontend/src/pages/AdminPanel.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useAllOrders.ts",
-          "frontend/src/hooks/useOrdersByStatus.ts",
-          "frontend/src/hooks/useUpdateOrderStatus.ts",
-          "frontend/src/pages/AdminOrders.tsx",
-          "frontend/src/pages/AdminOrderDetails.tsx",
           "frontend/src/App.tsx",
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/MobileNav.tsx",
           "frontend/src/pages/AdminPanel.tsx"
         ]
       },
       {
-        "id": "REQ-12",
-        "summary": "Add inventory management to admin dashboard where admin can set and track stock quantities for each product, receive low stock alerts, and prevent orders when items are out of stock",
+        "id": "REQ-23",
+        "summary": "Display a recent orders section on the admin dashboard showing the 5 most recent orders with order ID, customer name, status, and total price, with a link to view all orders",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useProductStock.ts",
-          "frontend/src/hooks/useLowStockProducts.ts",
-          "frontend/src/pages/CreateProduct.tsx",
-          "frontend/src/pages/EditProduct.tsx",
-          "frontend/src/pages/AdminPanel.tsx",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/AddToCartButton.tsx"
+          "frontend/src/pages/AdminDashboard.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useLowStockProducts.ts",
-          "frontend/src/pages/CreateProduct.tsx",
-          "frontend/src/pages/EditProduct.tsx",
-          "frontend/src/pages/AdminPanel.tsx",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/AddToCartButton.tsx"
-        ]
-      },
-      {
-        "id": "REQ-13",
-        "summary": "Implement product search functionality with text input allowing users to search products by name, description, or category, with instant results filtering",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/ProductSearch.tsx",
-          "frontend/src/pages/PublicCatalog.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/ProductSearch.tsx",
-          "frontend/src/pages/PublicCatalog.tsx"
-        ]
-      },
-      {
-        "id": "REQ-14",
-        "summary": "Add product category system with categories including Electronics, Clothing, and others, allowing admin to assign categories when creating/editing products and users to filter catalog by category",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useProductsByCategory.ts",
-          "frontend/src/components/CategoryFilter.tsx",
-          "frontend/src/components/CategoryBadge.tsx",
-          "frontend/src/pages/CreateProduct.tsx",
-          "frontend/src/pages/EditProduct.tsx",
-          "frontend/src/pages/PublicCatalog.tsx",
-          "frontend/src/components/ProductCard.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/CategoryFilter.tsx",
-          "frontend/src/components/CategoryBadge.tsx",
-          "frontend/src/pages/CreateProduct.tsx",
-          "frontend/src/pages/EditProduct.tsx",
-          "frontend/src/pages/PublicCatalog.tsx",
-          "frontend/src/components/ProductCard.tsx"
-        ]
-      },
-      {
-        "id": "REQ-15",
-        "summary": "Implement Nepali language option with language toggle allowing users to switch between English and Nepali for all user-facing text including product listings, cart, checkout, and order pages",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/contexts/LanguageContext.tsx",
-          "frontend/src/translations/translations.ts",
-          "frontend/src/components/LanguageToggle.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/main.tsx",
-          "frontend/src/pages/PublicCatalog.tsx",
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/pages/MyOrders.tsx",
-          "frontend/src/pages/OrderDetails.tsx",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/components/OrderStatusBadge.tsx",
-          "frontend/src/components/CategoryBadge.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/contexts/LanguageContext.tsx",
-          "frontend/src/translations/translations.ts",
-          "frontend/src/components/LanguageToggle.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/PublicCatalog.tsx",
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/pages/MyOrders.tsx",
-          "frontend/src/pages/OrderDetails.tsx",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/components/OrderStatusBadge.tsx",
-          "frontend/src/components/CategoryBadge.tsx"
-        ]
-      },
-      {
-        "id": "REQ-16",
-        "summary": "Add smooth animations throughout the app: fade-in transitions when pages load, sliding cart drawer from right side, confirmation pop-ups with scale-in animation, and smooth transitions between product states",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/PageTransition.tsx",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/components/Toast.tsx",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/LoadingSkeleton.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/pages/PublicCatalog.tsx",
-          "frontend/src/hooks/useAddToCart.ts",
-          "frontend/src/hooks/useCheckout.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/PageTransition.tsx",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/LoadingSkeleton.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/pages/PublicCatalog.tsx",
-          "frontend/src/hooks/useAddToCart.ts",
-          "frontend/src/hooks/useCheckout.ts"
-        ]
-      },
-      {
-        "id": "REQ-17",
-        "summary": "Optimize the entire application for mobile-responsive design with touch-friendly controls, ensuring excellent user experience on Android and iOS devices across all screen sizes from 320px to large tablets",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/ProductGrid.tsx",
-          "frontend/src/components/MobileNav.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/pages/MyOrders.tsx",
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/MobileNav.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/pages/MyOrders.tsx",
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js"
-        ]
-      },
-      {
-        "id": "REQ-18",
-        "summary": "Replace the warm earthy color scheme with a modern mobile e-commerce design using vibrant, trustworthy colors suitable for a shopping app in Nepal, incorporating blue or green accent colors, clean white backgrounds, and ensuring high contrast for readability on mobile devices",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/components/AddToCartButton.tsx",
-          "frontend/src/pages/Checkout.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js",
-          "frontend/src/components/ProductCard.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/components/AddToCartButton.tsx",
-          "frontend/src/pages/Checkout.tsx"
-        ]
-      },
-      {
-        "id": "REQ-7",
-        "summary": "Implement a shopping cart system where users can add products to cart, view cart contents with quantity adjustments, remove items, and see total price calculation",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useCart.ts",
-          "frontend/src/hooks/useAddToCart.ts",
-          "frontend/src/hooks/useUpdateCartQuantity.ts",
-          "frontend/src/hooks/useRemoveFromCart.ts",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/components/AddToCartButton.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/PublicCatalog.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useCart.ts",
-          "frontend/src/hooks/useAddToCart.ts",
-          "frontend/src/hooks/useUpdateCartQuantity.ts",
-          "frontend/src/hooks/useRemoveFromCart.ts",
-          "frontend/src/components/CartDrawer.tsx",
-          "frontend/src/components/AddToCartButton.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/pages/PublicCatalog.tsx"
-        ]
-      },
-      {
-        "id": "REQ-8",
-        "summary": "Create a cash-on-delivery (COD) checkout flow where users can review cart, provide shipping details (name, phone, full delivery address including city), place order without online payment, and receive order confirmation",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useCheckout.ts",
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/pages/OrderConfirmation.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/CartDrawer.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useCheckout.ts",
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/pages/OrderConfirmation.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/CartDrawer.tsx"
-        ]
-      },
-      {
-        "id": "REQ-9",
-        "summary": "Implement user registration and login system using Internet Identity for customers, separate from admin authentication, allowing users to track their orders and maintain cart state",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useGetCallerUserProfile.ts",
-          "frontend/src/hooks/useSaveCallerUserProfile.ts",
-          "frontend/src/components/ProfileSetupModal.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/components/LoginButton.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useGetCallerUserProfile.ts",
-          "frontend/src/hooks/useSaveCallerUserProfile.ts",
-          "frontend/src/components/ProfileSetupModal.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/pages/AdminDashboard.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
     "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
-    "build-template/README.md",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/cart-icon.dim_64x64.png",
-    "frontend/public/assets/generated/hero-mobile.dim_800x400.png",
-    "frontend/public/assets/generated/nepal-pin.dim_48x48.png",
     "frontend/src/App.tsx",
     "frontend/src/backend.d.ts",
     "frontend/src/backend.ts",
-    "frontend/src/components/AddToCartButton.tsx",
-    "frontend/src/components/CartDrawer.tsx",
-    "frontend/src/components/CategoryBadge.tsx",
-    "frontend/src/components/CategoryFilter.tsx",
     "frontend/src/components/Header.tsx",
-    "frontend/src/components/LanguageToggle.tsx",
-    "frontend/src/components/LoadingSkeleton.tsx",
     "frontend/src/components/MobileNav.tsx",
-    "frontend/src/components/OrderStatusBadge.tsx",
-    "frontend/src/components/PageTransition.tsx",
-    "frontend/src/components/ProductCard.tsx",
-    "frontend/src/components/ProductSearch.tsx",
-    "frontend/src/components/ProfileSetupModal.tsx",
     "frontend/src/contexts/LanguageContext.tsx",
     "frontend/src/declarations/backend.did.d.ts",
     "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useAddToCart.ts",
-    "frontend/src/hooks/useAllOrders.ts",
-    "frontend/src/hooks/useCart.ts",
-    "frontend/src/hooks/useCheckout.ts",
-    "frontend/src/hooks/useCreateProduct.ts",
-    "frontend/src/hooks/useGetCallerUserProfile.ts",
-    "frontend/src/hooks/useLowStockProducts.ts",
-    "frontend/src/hooks/useOrder.ts",
-    "frontend/src/hooks/useOrdersByStatus.ts",
-    "frontend/src/hooks/useRemoveFromCart.ts",
-    "frontend/src/hooks/useSaveCallerUserProfile.ts",
-    "frontend/src/hooks/useUpdateCartQuantity.ts",
-    "frontend/src/hooks/useUpdateOrderStatus.ts",
-    "frontend/src/hooks/useUpdateProduct.ts",
-    "frontend/src/hooks/useUserOrders.ts",
-    "frontend/src/index.css",
-    "frontend/src/pages/AdminOrderDetails.tsx",
-    "frontend/src/pages/AdminOrders.tsx",
+    "frontend/src/hooks/useLowStockCount.ts",
+    "frontend/src/hooks/usePendingOrders.ts",
+    "frontend/src/hooks/useTotalOrders.ts",
+    "frontend/src/hooks/useTotalProducts.ts",
+    "frontend/src/hooks/useTotalRevenue.ts",
+    "frontend/src/pages/AdminDashboard.tsx",
     "frontend/src/pages/AdminPanel.tsx",
-    "frontend/src/pages/Checkout.tsx",
-    "frontend/src/pages/CreateProduct.tsx",
-    "frontend/src/pages/EditProduct.tsx",
-    "frontend/src/pages/MyOrders.tsx",
-    "frontend/src/pages/OrderConfirmation.tsx",
-    "frontend/src/pages/OrderDetails.tsx",
-    "frontend/src/pages/PublicCatalog.tsx",
-    "frontend/src/translations/translations.ts",
-    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

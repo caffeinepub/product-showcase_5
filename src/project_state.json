@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 5,
+  "projectStateVersion": 7,
   "summary": "Mobile e-commerce app for NPJ Shopping in Nepal with cash-on-delivery payments, secure admin dashboard for product/inventory/order/shipping management, user authentication for customers to browse/search/cart/checkout/track orders, category support, Nepali language option, smooth animations, and responsive Android/iOS design",
   "architectural_notes": [
     "Mobile-first e-commerce app for Android/iOS",
@@ -16,7 +16,6 @@
   ],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Modern shopping cart icon in blue or green accent color, simple line style (cart-icon.dim_64x64.png)\n- Nepal location/map pin icon for delivery address sections (nepal-pin.dim_48x48.png)\n- Mobile-friendly hero banner showing happy Nepal customer receiving package, warm and trustworthy feel (hero-mobile.dim_800x400.png)",
   "existing_features": [
     {
       "id": "feature-create-a-product-catalog-interface-displaying-products-with-images-names-descriptions-and-prices-in-a-visually-appealing-grid-layout",
@@ -153,6 +152,38 @@
         "REQ-18"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-create-an-admin-dashboard-page-displaying-key-business-metrics-including-total-products-count-total-orders-count-pending-orders-count-low-stock-products-count-and-total-revenue-from-all-completed-orders",
+      "title": "Create an admin dashboard page displaying key business metrics including total products count, total orders count, pending orders count, low stock products count, and total revenue from all completed orders",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-custom-react-hooks-for-each-dashboard-statistic-usetotalproducts-usetotalorders-usependingorders-uselowstockcount-and-usetotalrevenue-that-fetch-data-from-the-backend",
+      "title": "Create custom React hooks for each dashboard statistic: useTotalProducts, useTotalOrders, usePendingOrders, useLowStockCount, and useTotalRevenue that fetch data from the backend",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-navigation-link-to-the-admin-dashboard-from-the-adminpanel-page-header-and-from-the-main-header-component-when-user-is-logged-in-as-admin",
+      "title": "Add a navigation link to the admin dashboard from the AdminPanel page header and from the main Header component when user is logged in as admin",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-a-recent-orders-section-on-the-admin-dashboard-showing-the-5-most-recent-orders-with-order-id-customer-name-status-and-total-price-with-a-link-to-view-all-orders",
+      "title": "Display a recent orders section on the admin dashboard showing the 5 most recent orders with order ID, customer name, status, and total price, with a link to view all orders",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -246,6 +277,14 @@
       "id": "AR-21",
       "summary": "Implement secure login for admin dashboard (password-protected)",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Add backend query methods to retrieve aggregated statistics: getTotalProducts, getTotalOrders, getPendingOrdersCount, getLowStockCount, and getTotalRevenue",
+      "reqIds": [
+        "REQ-20"
+      ],
       "status": "pending"
     }
   ],

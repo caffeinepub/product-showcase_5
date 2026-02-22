@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Menu, X, ShoppingBag, Package, Settings } from 'lucide-react';
+import { Menu, X, ShoppingBag, Package, Settings, LayoutDashboard } from 'lucide-react';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 import { useIsAdmin } from '../hooks/useIsAdmin';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -53,14 +53,24 @@ export default function MobileNav() {
               )}
               
               {isAuthenticated && isAdmin && (
-                <Link
-                  to="/admin"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-accent transition-colors"
-                >
-                  <Settings className="h-5 w-5" />
-                  <span className="font-medium">{t('adminPanel')}</span>
-                </Link>
+                <>
+                  <Link
+                    to="/admin/dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-accent transition-colors"
+                  >
+                    <LayoutDashboard className="h-5 w-5" />
+                    <span className="font-medium">{t('dashboard')}</span>
+                  </Link>
+                  <Link
+                    to="/admin"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-accent transition-colors"
+                  >
+                    <Settings className="h-5 w-5" />
+                    <span className="font-medium">{t('adminPanel')}</span>
+                  </Link>
+                </>
               )}
               
               <div className="flex items-center gap-2 px-4 py-2">

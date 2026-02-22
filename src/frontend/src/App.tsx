@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import PublicCatalog from './pages/PublicCatalog';
 import AdminPanel from './pages/AdminPanel';
+import AdminDashboard from './pages/AdminDashboard';
 import CreateProduct from './pages/CreateProduct';
 import EditProduct from './pages/EditProduct';
 import Checkout from './pages/Checkout';
@@ -97,6 +98,18 @@ const adminRoute = createRoute({
   ),
 });
 
+const adminDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/dashboard',
+  component: () => (
+    <AdminGuard>
+      <PageTransition>
+        <AdminDashboard />
+      </PageTransition>
+    </AdminGuard>
+  ),
+});
+
 const createProductRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/admin/create',
@@ -152,6 +165,7 @@ const routeTree = rootRoute.addChildren([
   myOrdersRoute,
   orderDetailsRoute,
   adminRoute,
+  adminDashboardRoute,
   createProductRoute,
   editProductRoute,
   adminOrdersRoute,

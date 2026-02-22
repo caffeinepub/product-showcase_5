@@ -171,13 +171,18 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getCart(): Promise<Array<CartItem>>;
+    getLowStockCount(threshold: bigint): Promise<bigint>;
     getLowStockProducts(threshold: bigint): Promise<Array<Product>>;
     getOrder(orderId: string): Promise<Order>;
     getOrdersByStatus(status: OrderStatus): Promise<Array<Order>>;
+    getPendingOrdersCount(): Promise<bigint>;
     getProduct(id: string): Promise<Product>;
     getProductStock(productId: string): Promise<bigint>;
     getProducts(): Promise<Array<Product>>;
     getProductsByCategory(category: ProductCategory): Promise<Array<Product>>;
+    getTotalOrders(): Promise<bigint>;
+    getTotalProducts(): Promise<bigint>;
+    getTotalRevenue(): Promise<bigint>;
     getUserOrders(): Promise<Array<Order>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
@@ -428,6 +433,20 @@ export class Backend implements backendInterface {
             return from_candid_vec_n18(this._uploadFile, this._downloadFile, result);
         }
     }
+    async getLowStockCount(arg0: bigint): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getLowStockCount(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getLowStockCount(arg0);
+            return result;
+        }
+    }
     async getLowStockProducts(arg0: bigint): Promise<Array<Product>> {
         if (this.processError) {
             try {
@@ -468,6 +487,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getOrdersByStatus(to_candid_OrderStatus_n30(this._uploadFile, this._downloadFile, arg0));
             return from_candid_vec_n13(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getPendingOrdersCount(): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getPendingOrdersCount();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getPendingOrdersCount();
+            return result;
         }
     }
     async getProduct(arg0: string): Promise<Product> {
@@ -524,6 +557,48 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getProductsByCategory(to_candid_ProductCategory_n11(this._uploadFile, this._downloadFile, arg0));
             return from_candid_vec_n29(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getTotalOrders(): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getTotalOrders();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getTotalOrders();
+            return result;
+        }
+    }
+    async getTotalProducts(): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getTotalProducts();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getTotalProducts();
+            return result;
+        }
+    }
+    async getTotalRevenue(): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getTotalRevenue();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getTotalRevenue();
+            return result;
         }
     }
     async getUserOrders(): Promise<Array<Order>> {

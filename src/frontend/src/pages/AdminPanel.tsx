@@ -3,7 +3,7 @@ import { useProducts } from '../hooks/useProducts';
 import { useDeleteProduct } from '../hooks/useDeleteProduct';
 import { useLowStockProducts } from '../hooks/useLowStockProducts';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Loader2, Plus, Edit, Trash2, Package, AlertCircle } from 'lucide-react';
+import { Loader2, Plus, Edit, Trash2, Package, AlertCircle, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import CategoryBadge from '../components/CategoryBadge';
@@ -42,6 +42,12 @@ export default function AdminPanel() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold">{t('manageProducts')}</h1>
           <div className="flex flex-col sm:flex-row gap-3">
+            <Link to="/admin/dashboard">
+              <Button variant="outline" className="w-full sm:w-auto min-h-[44px]">
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                {t('dashboard')}
+              </Button>
+            </Link>
             <Link to="/admin/orders">
               <Button variant="outline" className="w-full sm:w-auto min-h-[44px]">
                 <Package className="h-4 w-4 mr-2" />
@@ -60,7 +66,7 @@ export default function AdminPanel() {
         {lowStockProducts && lowStockProducts.length > 0 && (
           <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
             <div className="flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+              <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5 shrink-0" />
               <div>
                 <h3 className="font-semibold text-yellow-900 dark:text-yellow-100">{t('lowStockAlert')}</h3>
                 <p className="text-sm text-yellow-800 dark:text-yellow-200 mt-1">

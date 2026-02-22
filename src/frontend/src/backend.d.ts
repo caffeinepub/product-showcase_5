@@ -78,13 +78,18 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getCart(): Promise<Array<CartItem>>;
+    getLowStockCount(threshold: bigint): Promise<bigint>;
     getLowStockProducts(threshold: bigint): Promise<Array<Product>>;
     getOrder(orderId: string): Promise<Order>;
     getOrdersByStatus(status: OrderStatus): Promise<Array<Order>>;
+    getPendingOrdersCount(): Promise<bigint>;
     getProduct(id: string): Promise<Product>;
     getProductStock(productId: string): Promise<bigint>;
     getProducts(): Promise<Array<Product>>;
     getProductsByCategory(category: ProductCategory): Promise<Array<Product>>;
+    getTotalOrders(): Promise<bigint>;
+    getTotalProducts(): Promise<bigint>;
+    getTotalRevenue(): Promise<bigint>;
     getUserOrders(): Promise<Array<Order>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;

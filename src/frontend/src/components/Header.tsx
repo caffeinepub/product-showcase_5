@@ -7,7 +7,7 @@ import LoginButton from './LoginButton';
 import LanguageToggle from './LanguageToggle';
 import MobileNav from './MobileNav';
 import CartDrawer from './CartDrawer';
-import { ShoppingBag, Settings, Package } from 'lucide-react';
+import { ShoppingBag, Settings, Package, LayoutDashboard } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Header() {
@@ -45,13 +45,22 @@ export default function Header() {
               )}
               
               {isAuthenticated && isAdmin && (
-                <Link
-                  to="/admin"
-                  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors min-h-[44px]"
-                >
-                  <Settings className="h-4 w-4" />
-                  <span>{t('adminPanel')}</span>
-                </Link>
+                <>
+                  <Link
+                    to="/admin/dashboard"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors min-h-[44px]"
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    <span>{t('dashboard')}</span>
+                  </Link>
+                  <Link
+                    to="/admin"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors min-h-[44px]"
+                  >
+                    <Settings className="h-4 w-4" />
+                    <span>{t('adminPanel')}</span>
+                  </Link>
+                </>
               )}
               
               {isAuthenticated && (

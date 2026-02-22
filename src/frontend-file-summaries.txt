@@ -1,8 +1,8 @@
 {
   "frontend/src/index.css": "Global styles with modern e-commerce blue color palette using OKLCH, Inter font, custom animations for cart drawer and page transitions, and mobile-optimized typography.",
   "frontend/tailwind.config.js": "Tailwind configuration with modern blue e-commerce color scheme, Inter font, custom shadows, and animation utilities for smooth transitions.",
-  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining routes for public catalog (root), admin panel, create product, and edit product pages with AdminGuard protection for admin routes.",
-  "frontend/src/components/Header.tsx": "Site header with branding, conditional admin panel link (visible only to admins), and login button with sticky positioning and backdrop blur effect.",
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining routes for public catalog, admin dashboard, admin panel, product management, orders, and checkout pages with AdminGuard protection for admin routes.",
+  "frontend/src/components/Header.tsx": "Site header with branding, conditional admin dashboard and panel links (visible only to admins), my orders link, cart button, and login button with sticky positioning and backdrop blur effect.",
   "frontend/src/components/Footer.tsx": "Footer component with copyright notice and attribution link to caffeine.ai with UTM tracking parameters based on hostname.",
   "frontend/src/components/LoginButton.tsx": "Internet Identity login/logout button with loading states, icons, and proper query cache clearing on logout.",
   "frontend/src/components/WhatsAppButton.tsx": "WhatsApp contact button that opens WhatsApp with pre-filled message including product name, styled with WhatsApp green color.",
@@ -10,7 +10,7 @@
   "frontend/src/components/ProductGrid.tsx": "Responsive grid layout component for displaying multiple product cards with empty state handling.",
   "frontend/src/components/AdminGuard.tsx": "Authorization wrapper component that checks authentication and admin status, showing appropriate loading, login required, or access denied messages.",
   "frontend/src/pages/PublicCatalog.tsx": "Public-facing product catalog page with hero banner image, product grid, and loading/error states, accessible without authentication.",
-  "frontend/src/pages/AdminPanel.tsx": "Admin dashboard displaying all products in a table with edit and delete actions, plus add product button, protected by admin authentication.",
+  "frontend/src/pages/AdminPanel.tsx": "Admin dashboard displaying all products in a table with edit and delete actions, plus navigation to dashboard and orders, and add product button, protected by admin authentication with Tailwind v3 compatible classes.",
   "frontend/src/pages/CreateProduct.tsx": "Product creation form with fields for name, description, price, WhatsApp number, and image upload with progress tracking.",
   "frontend/src/pages/EditProduct.tsx": "Product editing form that loads existing product data and allows updating all fields including name, description, price, stock, category, WhatsApp number, and image with proper type safety for all parameters.",
   "frontend/src/hooks/useProducts.ts": "React Query hook for fetching all products from the backend, enabled when actor is available.",
@@ -20,5 +20,13 @@
   "frontend/src/hooks/useDeleteProduct.ts": "React Query mutation hook for deleting products with automatic cache invalidation on success.",
   "frontend/src/hooks/useIsAdmin.ts": "React Query hook that checks if the current authenticated user has admin privileges using the backend's isCallerAdmin method.",
   "frontend/src/pages/AdminPanel.ts": "Admin dashboard displaying products table with stock levels, low stock alerts, category badges, and management actions for products and orders.",
-  "frontend/src/hooks/useLowStockProducts.ts": "React Query hook for fetching products with stock below a specified threshold for admin inventory management."
+  "frontend/src/hooks/useLowStockProducts.ts": "React Query hook for fetching products with stock below a specified threshold for admin inventory management.",
+  "frontend/src/components/MobileNav.tsx": "Mobile navigation menu with slide-down drawer containing links to products, my orders, admin dashboard, and admin panel (when authenticated as admin), plus language toggle and login button.",
+  "frontend/src/pages/AdminDashboard.tsx": "Admin dashboard page displaying key business metrics (total products, orders, pending orders, low stock count, revenue) in cards and a recent orders section with the 5 most recent orders.",
+  "frontend/src/hooks/useTotalProducts.ts": "React Query hook for fetching the total products count from the backend getTotalProducts method with refetchOnMount enabled.",
+  "frontend/src/hooks/useTotalOrders.ts": "React Query hook for fetching the total orders count from the backend getTotalOrders method with refetchOnMount enabled.",
+  "frontend/src/hooks/usePendingOrders.ts": "React Query hook for fetching the pending orders count from the backend getPendingOrdersCount method with refetchOnMount enabled.",
+  "frontend/src/hooks/useLowStockCount.ts": "React Query hook for fetching the low stock products count from the backend getLowStockCount method with a threshold parameter (default 10), converting BigInt to string in query key, and refetchOnMount enabled.",
+  "frontend/src/hooks/useTotalRevenue.ts": "React Query hook for fetching the total revenue from the backend getTotalRevenue method with refetchOnMount enabled.",
+  "frontend/src/contexts/LanguageContext.tsx": "Language context provider with English and Nepali translations including dashboard-related keys, providing language state, setLanguage, toggleLanguage function, and translation helper for switching between languages."
 }

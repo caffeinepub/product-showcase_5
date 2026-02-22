@@ -10,9 +10,7 @@ import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
-import Migration "migration";
 
-(with migration = Migration.run)
 actor {
   type ProductCategory = {
     #electronics;
@@ -506,5 +504,41 @@ actor {
         product.stock <= threshold;
       }
     );
+  };
+
+  // Aggregated Statistics
+  public query ({ caller }) func getTotalProducts() : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view statistics");
+    };
+    products.size();
+  };
+
+  public query ({ caller }) func getTotalOrders() : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view statistics");
+    };
+    orders.size();
+  };
+
+  public query ({ caller }) func getPendingOrdersCount() : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view statistics");
+    };
+    orders.values().toArray().filter(func(order) { order.status == #pending }).size();
+  };
+
+  public query ({ caller }) func getLowStockCount(threshold : Nat) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view statistics");
+    };
+    products.values().toArray().filter(func(product) { product.stock <= threshold }).size();
+  };
+
+  public query ({ caller }) func getTotalRevenue() : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can view statistics");
+    };
+    orders.values().toArray().foldLeft(0, func(acc, order) { acc + order.total });
   };
 };
