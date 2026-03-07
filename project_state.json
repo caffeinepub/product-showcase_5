@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "E-commerce admin system with product management and order tracking",
+  "architectural_notes": [
+    "Product fields: name, price (₹), description, image, category, stock quantity",
+    "Separate product management page from main dashboard",
+    "Real-time order tracking system",
+    "Motoko backend for data persistence",
+    "React + TypeScript frontend with Tailwind CSS",
+    "Internet Identity for admin authentication"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-dedicated-product-management-page-separate-from-the-main-admin-dashboard-where-admins-can-view-all-products-in-a-table-format-with-columns-for-product-name-price-description-image-category-and-current-stock-quantity",
+      "title": "Create a dedicated Product Management page separate from the main admin dashboard where admins can view all products in a table format with columns for product name, price (₹), description, image, category, and current stock quantity",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-inventory-adjustment-controls-on-the-product-management-page-allowing-admins-to-add-or-subtract-stock-quantities-for-existing-products-with-numeric-input-and-increment-decrement-buttons",
+      "title": "Add inventory adjustment controls on the Product Management page allowing admins to add or subtract stock quantities for existing products with numeric input and increment/decrement buttons",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-full-crud-operations-on-the-product-management-page-allow-admins-to-add-new-products-with-all-fields-name-price-in-rupees-description-image-category-stock-quantity-edit-existing-products-and-remove-products-from-the-catalog",
+      "title": "Implement full CRUD operations on the Product Management page: allow admins to add new products with all fields (name, price in rupees, description, image, category, stock quantity), edit existing products, and remove products from the catalog",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-orders-dashboard-section-within-the-admin-panel-that-displays-all-incoming-customer-orders-in-real-time-with-order-details-including-order-id-customer-information-ordered-products-with-quantities-total-price-order-status-and-timestamp",
+      "title": "Create an Orders Dashboard section within the admin panel that displays all incoming customer orders in real-time with order details including order ID, customer information, ordered products with quantities, total price, order status, and timestamp",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-navigation-link-in-the-main-admin-dashboard-header-to-access-the-new-product-management-page",
+      "title": "Add navigation link in the main admin dashboard header to access the new Product Management page",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Product management page with add/edit/remove products and inventory adjustment",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Orders dashboard with real-time order tracking and details",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Backend Motoko canisters for products and orders storage",
+      "reqIds": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Internet Identity authentication for admin access",
+      "reqIds": [],
+      "status": "in_progress"
+    }
+  ],
+  "projectName": "Nepal E-Shop Admin",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,118 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add dedicated Product Management page with inventory controls and Order tracking dashboard",
+  "requirements": [
+    {
+      "id": "REQ-5",
+      "summary": "Create a dedicated Product Management page with product table displaying all product details including stock quantities",
+      "acceptanceCriteria": [
+        "A new route '/admin/products' exists and is accessible from the admin dashboard",
+        "Products are displayed in a table with all required fields visible",
+        "The page is protected by AdminGuard and requires authentication"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ProductManagement.tsx",
+          "operation": "create",
+          "description": "Create a new ProductManagement page component that displays all products in a table format with columns for product name, price (₹), description, image thumbnail, category badge, and current stock quantity. The page must be wrapped with AdminGuard for authentication protection. Use the useProducts hook to fetch product data. Display product images using ExternalBlob.getDirectURL(). Show rupee symbol (₹) for prices. Include loading states using LoadingSkeleton and error handling. The table should be responsive and use Tailwind CSS for styling."
+        },
+        {
+          "path": "frontend/src/routes.tsx",
+          "operation": "modify",
+          "description": "Add a new route configuration for '/admin/products' that renders the ProductManagement page component. Ensure the route is nested under admin routes and follows the same pattern as existing admin routes like AdminPanel and AdminOrders."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add inventory adjustment controls allowing admins to add or subtract stock quantities with increment/decrement buttons",
+      "acceptanceCriteria": [
+        "Each product row has stock adjustment controls (+ and - buttons or numeric input)",
+        "Stock quantity updates are persisted to the backend immediately",
+        "Current stock count is displayed and updates in real-time after changes",
+        "Stock cannot be reduced below zero"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/StockAdjustmentControls.tsx",
+          "operation": "create",
+          "description": "Create a StockAdjustmentControls component that renders increment (+) and decrement (-) buttons alongside a numeric input field for stock quantity. The component should accept productId and currentStock as props. Use the backend method updateStock to persist changes immediately after adjustment. Include validation to prevent stock from going below zero (disable decrement button when stock is 0). Show loading state during the update operation. Display the current stock count between the buttons. Use toast notifications for success/error feedback."
+        },
+        {
+          "path": "frontend/src/hooks/useUpdateStock.ts",
+          "operation": "create",
+          "description": "Create a custom mutation hook useUpdateStock that calls the backend updateStock method with productId and new stock value. The hook should invalidate the products query on success to trigger a refetch and update the UI. Include proper error handling and return mutation state (isLoading, error, mutate function) for use in components."
+        },
+        {
+          "path": "frontend/src/pages/ProductManagement.tsx",
+          "operation": "modify",
+          "description": "Integrate the StockAdjustmentControls component into each product row in the table. Pass the product ID and current stock as props. Ensure the controls are positioned in a dedicated 'Stock Management' column. The updated stock values should reflect immediately after successful mutation due to query invalidation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Implement full CRUD operations on the Product Management page for adding, editing, and removing products",
+      "acceptanceCriteria": [
+        "An 'Add Product' button opens a form to create new products with all required fields",
+        "Each product has 'Edit' and 'Delete' action buttons",
+        "Editing opens a form pre-filled with current product data",
+        "Delete action shows confirmation dialog before removing product",
+        "All changes persist to the backend and refresh the product list"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ProductManagement.tsx",
+          "operation": "modify",
+          "description": "Add an 'Add Product' button at the top of the ProductManagement page that navigates to the CreateProduct page. Add 'Edit' and 'Delete' action buttons in an 'Actions' column for each product row. The Edit button should navigate to EditProduct page with the product ID. The Delete button should open a confirmation dialog before calling the delete mutation. Use existing useDeleteProduct hook for deletion. Ensure the product list refreshes after any CRUD operation through query invalidation."
+        },
+        {
+          "path": "frontend/src/components/DeleteProductDialog.tsx",
+          "operation": "create",
+          "description": "Create a DeleteProductDialog component that displays a confirmation modal before deleting a product. The dialog should show the product name and warn that this action cannot be undone. Include 'Cancel' and 'Delete' buttons. Use the useDeleteProduct hook to perform the deletion. Show loading state on the Delete button during the operation. Close the dialog on success or cancellation. Use shadcn/ui Dialog component for the modal."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Create an Orders Dashboard section displaying all customer orders in real-time with full order details",
+      "acceptanceCriteria": [
+        "A dedicated Orders section is accessible from the admin panel navigation",
+        "All orders are displayed in a table or card layout showing key information",
+        "Order details include customer shipping information (name, phone, address, city)",
+        "Each order shows the list of products ordered with quantities and prices",
+        "Orders display their current status (pending, processing, shipped, delivered)",
+        "Orders are sorted by most recent first"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AdminOrders.tsx",
+          "operation": "modify",
+          "description": "Enhance the existing AdminOrders page to display comprehensive order details in the table. Add columns or expand the existing layout to show customer shipping information (name, phone, address, city) alongside order ID, status, and total. Ensure orders are sorted by timestamp in descending order (most recent first). Each order row should display a summary of ordered items with quantities. Keep the existing status filter functionality and navigation to order details. Use the useAllOrders hook which already fetches all order data including shipping details and items."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add navigation link in the admin dashboard header to access the Product Management page",
+      "acceptanceCriteria": [
+        "A 'Product Management' or 'Manage Products' link appears in the admin navigation",
+        "Clicking the link navigates to the Product Management page",
+        "The link is only visible to authenticated admin users"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add a 'Product Management' navigation link in the admin section of the Header component. The link should navigate to '/admin/products' route. Ensure it appears alongside the existing 'Admin Panel' link and is only visible when the user is authenticated and has admin privileges (use the isAdmin state). Include the link in both desktop and mobile navigation menus. Use the same styling pattern as existing navigation links for consistency."
+        },
+        {
+          "path": "frontend/src/components/MobileNav.tsx",
+          "operation": "modify",
+          "description": "Add a 'Product Management' navigation link in the mobile menu that navigates to '/admin/products'. Ensure it is only rendered when the user is authenticated and has admin privileges. Position it alongside the existing 'Admin Panel' link in the navigation list. Apply consistent styling with other mobile navigation items."
+        }
+      ]
+    }
+  ]
+}

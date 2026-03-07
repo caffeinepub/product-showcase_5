@@ -1,0 +1,109 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-dedicated-product-management-page-separate-from-the-main-admin-dashboard-where-admins-can-view-all-products-in-a-table-format-with-columns-for-product-name-price-description-image-category-and-current-stock-quantity",
+      "featureTitle": "Create a dedicated Product Management page separate from the main admin dashboard where admins can view all products in a table format with columns for product name, price (₹), description, image, category, and current stock quantity",
+      "files": [
+        "frontend/src/pages/ProductManagement.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-inventory-adjustment-controls-on-the-product-management-page-allowing-admins-to-add-or-subtract-stock-quantities-for-existing-products-with-numeric-input-and-increment-decrement-buttons",
+      "featureTitle": "Add inventory adjustment controls on the Product Management page allowing admins to add or subtract stock quantities for existing products with numeric input and increment/decrement buttons",
+      "files": [
+        "frontend/src/components/StockAdjustmentControls.tsx",
+        "frontend/src/hooks/useUpdateStock.ts",
+        "frontend/src/pages/ProductManagement.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-full-crud-operations-on-the-product-management-page-allow-admins-to-add-new-products-with-all-fields-name-price-in-rupees-description-image-category-stock-quantity-edit-existing-products-and-remove-products-from-the-catalog",
+      "featureTitle": "Implement full CRUD operations on the Product Management page: allow admins to add new products with all fields (name, price in rupees, description, image, category, stock quantity), edit existing products, and remove products from the catalog",
+      "files": [
+        "frontend/src/components/DeleteProductDialog.tsx",
+        "frontend/src/pages/ProductManagement.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-an-orders-dashboard-section-within-the-admin-panel-that-displays-all-incoming-customer-orders-in-real-time-with-order-details-including-order-id-customer-information-ordered-products-with-quantities-total-price-order-status-and-timestamp",
+      "featureTitle": "Create an Orders Dashboard section within the admin panel that displays all incoming customer orders in real-time with order details including order ID, customer information, ordered products with quantities, total price, order status, and timestamp",
+      "files": [
+        "frontend/src/pages/AdminOrders.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-navigation-link-in-the-main-admin-dashboard-header-to-access-the-new-product-management-page",
+      "featureTitle": "Add navigation link in the main admin dashboard header to access the new Product Management page",
+      "files": [
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/MobileNav.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

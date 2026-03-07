@@ -1,0 +1,125 @@
+{
+  "kind": "build_request",
+  "title": "Add dedicated Product Management page with inventory controls and Order tracking dashboard",
+  "projectName": "Nepal E-Shop Admin",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-5",
+      "text": "Create a dedicated Product Management page separate from the main admin dashboard where admins can view all products in a table format with columns for product name, price (₹), description, image, category, and current stock quantity",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-recent"
+        ],
+        "quotes": [
+          "separate page",
+          "where i can change product , rupee and iteam name add or sub"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new route '/admin/products' exists and is accessible from the admin dashboard",
+        "Products are displayed in a table with all required fields visible",
+        "The page is protected by AdminGuard and requires authentication"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add inventory adjustment controls on the Product Management page allowing admins to add or subtract stock quantities for existing products with numeric input and increment/decrement buttons",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-recent"
+        ],
+        "quotes": [
+          "add or sub",
+          "Adjust inventory quantities (stock count) for existing products"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each product row has stock adjustment controls (+ and - buttons or numeric input)",
+        "Stock quantity updates are persisted to the backend immediately",
+        "Current stock count is displayed and updates in real-time after changes",
+        "Stock cannot be reduced below zero"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Implement full CRUD operations on the Product Management page: allow admins to add new products with all fields (name, price in rupees, description, image, category, stock quantity), edit existing products, and remove products from the catalog",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-recent"
+        ],
+        "quotes": [
+          "Add new products, remove products",
+          "change product , rupee and iteam name"
+        ]
+      },
+      "acceptanceCriteria": [
+        "An 'Add Product' button opens a form to create new products with all required fields",
+        "Each product has 'Edit' and 'Delete' action buttons",
+        "Editing opens a form pre-filled with current product data",
+        "Delete action shows confirmation dialog before removing product",
+        "All changes persist to the backend and refresh the product list"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Create an Orders Dashboard section within the admin panel that displays all incoming customer orders in real-time with order details including order ID, customer information, ordered products with quantities, total price, order status, and timestamp",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-recent"
+        ],
+        "quotes": [
+          "when some one order their i will see too",
+          "Orders Dashboard: Real-time view of all customer orders"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A dedicated Orders section is accessible from the admin panel navigation",
+        "All orders are displayed in a table or card layout showing key information",
+        "Order details include customer shipping information (name, phone, address, city)",
+        "Each order shows the list of products ordered with quantities and prices",
+        "Orders display their current status (pending, processing, shipped, delivered)",
+        "Orders are sorted by most recent first"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add navigation link in the main admin dashboard header to access the new Product Management page",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-recent"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A 'Product Management' or 'Manage Products' link appears in the admin navigation",
+        "Clicking the link navigates to the Product Management page",
+        "The link is only visible to authenticated admin users"
+      ]
+    }
+  ],
+  "constraints": [
+    "Must use existing backend CRUD operations for products (createProduct, updateProduct, deleteProduct already implemented)",
+    "Must use existing order retrieval functions (getAllOrders already implemented)",
+    "Must maintain single-actor Motoko architecture in backend/main.mo",
+    "Product Management page must be protected with AdminGuard for admin-only access",
+    "Must use existing Internet Identity authentication system",
+    "Stock quantity must remain a Nat type and cannot go below zero"
+  ],
+  "nonGoals": [
+    "Creating a new authentication system (Internet Identity already implemented)",
+    "Modifying the existing public product catalog page",
+    "Adding real-time WebSocket notifications for new orders",
+    "Implementing order fulfillment workflow automation",
+    "Adding bulk product import/export functionality",
+    "Creating customer-facing order cancellation features"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
